@@ -1,0 +1,42 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+---
+
+<BaseLayout
+  title="Account deletion"
+  description="How to request deletion of a Playarr account and its associated data."
+>
+  <Section eyebrow="Legal" title="Account deletion">
+    <div class="prose">
+      <h2>Request deletion from your server operator</h2>
+      <p>
+        Playarr accounts belong to the self-hosted Playarr Server on which they were created. Contact that server's administrator and ask them to delete your user account, profiles, sessions, push registrations, playback history, playlists and other associated data. Give them the server address and username, but never send a password, access token or profile PIN.
+      </p>
+      <h2>Remove data from your devices</h2>
+      <p>
+        After the administrator confirms deletion, sign out, remove downloaded media, then clear Playarr's app storage or uninstall it on every device. In a browser, clear site data for the Playarr web app. Signing out alone does not delete the server account or every local record.
+      </p>
+      <h2>Need help identifying the operator?</h2>
+      <p>
+        The server address shown in Playarr identifies the independently operated service that controls the account. If playarr.app itself retained a short-lived device-link record, it expires automatically within minutes as described in the <a href="/legal/privacy">privacy policy</a>.
+      </p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .prose {
+    max-width: var(--width-prose);
+  }
+
+  .prose h2 {
+    margin-top: var(--space-7);
+    font-size: var(--text-xl);
+  }
+
+  .legal-effective-date {
+    color: var(--ink-muted);
+    font-size: var(--text-sm);
+  }
+</style>

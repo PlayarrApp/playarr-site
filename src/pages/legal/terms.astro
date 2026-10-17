@@ -1,0 +1,51 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+---
+
+<BaseLayout
+  title="Terms of use"
+  description="The conditions that apply when you use Playarr software and the public playarr.app service."
+>
+  <Section eyebrow="Legal" title="Terms of use">
+    <div class="prose">
+      <p class="legal-effective-date">Effective 28 August 2026</p>
+      <h2>Using Playarr</h2>
+      <p>
+        By using Playarr or playarr.app, you agree to these terms and the <a href="/legal/acceptable-use">acceptable-use policy</a>. If you do not agree, do not use the software or hosted service.
+      </p>
+      <h2>Your server and media</h2>
+      <p>
+        Playarr supplies no media. You are responsible for the server you connect to, the accounts you create, the media you store or play, the people you invite and compliance with the laws that apply to you.
+      </p>
+      <h2>Service availability</h2>
+      <p>
+        The public linking service is provided as a convenience and may change, be interrupted or be withdrawn. Keep direct access to your self-hosted server available; the hosted service is not a backup for your server or data.
+      </p>
+      <h2>Software licence and warranty</h2>
+      <p>
+        Playarr's source is made available under the MIT licence described on the <a href="/legal/licences">licences page</a>. To the maximum extent permitted by law, the software and hosted service are provided ‘as is’, without warranties, and the developers are not liable for indirect, incidental, special or consequential loss.
+      </p>
+      <h2>Changes</h2>
+      <p>
+        Material changes will be published on this page with a new effective date. Continuing to use the hosted service after a change means accepting the revised terms.
+      </p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .prose {
+    max-width: var(--width-prose);
+  }
+
+  .prose h2 {
+    margin-top: var(--space-7);
+    font-size: var(--text-xl);
+  }
+
+  .legal-effective-date {
+    color: var(--ink-muted);
+    font-size: var(--text-sm);
+  }
+</style>

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro'
+import Section from '../components/Section.astro'
+import ButtonLink from '../components/ButtonLink.astro'
+---
+
+<BaseLayout title="Page not found" description="That page does not exist.">
+  <Section eyebrow="404" title="Page not found" lede="That page does not exist, or it has moved.">
+    <ButtonLink href="/">Back to the home page</ButtonLink>
+  </Section>
+</BaseLayout>

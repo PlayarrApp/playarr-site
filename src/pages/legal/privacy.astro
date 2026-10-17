@@ -1,0 +1,213 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import { LINKS, SITE } from '../../consts'
+---
+
+<BaseLayout
+  title="Privacy"
+  description="How this website, the Playarr Android app, the hosted web app, a self-hosted Playarr server and the public linking service handle data."
+>
+  <Section eyebrow="Legal" title="Privacy">
+    <div class="prose">
+      <p class="legal-effective-date">Effective 28 August 2026</p>
+      <p class="lede">
+        Four separate things are worth keeping apart: this website, the server you run yourself,
+        the Playarr apps, and the hosted Playarr service.
+      </p>
+
+      <h2>Who this policy covers</h2>
+      <p>
+        This policy applies to the Playarr Android application with package name
+        <code>app.playarr.mobile</code>, the Playarr web application at
+        <a href={LINKS.playarrApp}>playarr.app</a>, and the short-lived device-linking service on
+        that domain. Playarr connects to a Playarr Server chosen and operated by you or your
+        server administrator.
+      </p>
+
+      <h2>This website</h2>
+      <p>
+        This site is a set of static pages. It sets no tracking cookies, runs no analytics, embeds
+        no third-party scripts, and has no forms to submit. The single piece of state it keeps is
+        your light or dark theme preference, stored in your own browser and never transmitted
+        anywhere.
+      </p>
+      <p>
+        Whoever hosts these pages will keep ordinary web-server request logs, as any web server
+        does.
+      </p>
+
+      <h2>The server you run</h2>
+      <p>
+        A {SITE.name} server is yours. Your library, your accounts, your watch history and your
+        artwork cache live on your own storage, under your own control. The project operates no
+        service that this data is sent to.
+      </p>
+      <p>
+        The server does reach out to the library-management applications and metadata sources you
+        configure it to reach, that is the point of configuring them, and it fetches artwork from
+        the URLs those applications provide, caching it locally.
+      </p>
+      <p>
+        Sign-in details go directly to your selected Playarr Server. The server may hold account
+        and profile details, library metadata, artwork, watch history, playlists, download and
+        playback state, server addresses, device identifiers, sessions, invitations and push
+        notification registrations. The person or organisation operating that server controls this
+        data, its backups, retention and deletion. Playarr's hosted service does not receive your
+        password, library, watch history or media files.
+      </p>
+      <p>
+        Ask your server administrator to correct or delete server-side account data. Server
+        administrators can also revoke sessions and remove push registrations.
+      </p>
+
+      <h2>The Playarr apps</h2>
+      <p>
+        This covers the Playarr apps for iPhone, iPad, Apple TV, Android, Android TV and the web.
+        The developer collects no data from them. The apps contain no advertising, no tracking, and
+        no third-party analytics or crash-reporting libraries, and they do not follow you across
+        other companies' apps or websites.
+      </p>
+      <p>What the apps keep on your own device:</p>
+      <ul>
+        <li>the addresses of the servers you add,</li>
+        <li>
+          your sign-in session, held in the operating system's secure storage (the Keychain on
+          Apple devices),
+        </li>
+        <li>your preferences, such as language, theme and playback settings,</li>
+        <li>
+          anything you choose to download for offline viewing, with its playback progress, which
+          is removed when you delete the download or the app,
+        </li>
+        <li>
+          a random per-install device identifier, and authentication and refresh tokens.
+        </li>
+      </ul>
+      <p>
+        Everything else the apps show, including your library, watch history and accounts, is
+        fetched from your own server and handled as described under "The server you run". Signing
+        out, or deleting the app, removes the session and settings from the device. Deleting your
+        account or history is a matter for whoever runs your server.
+      </p>
+      <p>
+        On Apple devices the app asks for local network access so that it can find your server and
+        any Chromecast devices on your home network. Chromecast support uses Google's Cast
+        software, which is governed by Google's own privacy policy. Apple may separately give the
+        developer aggregate, non-identifying crash and usage reports if you have chosen to share
+        them in your device settings. Beta testers on TestFlight are also subject to Apple's
+        TestFlight terms.
+      </p>
+
+      <h2>Notifications and Google services</h2>
+      <p>
+        In production Android builds configured for invite notifications, Google Firebase Cloud
+        Messaging creates an app-installation identifier and push token after you sign in. The
+        token is registered with your selected Playarr Server so it can deliver invitation
+        notifications; notification permission controls whether Android displays them. Playarr
+        does not use Firebase Analytics, advertising SDKs or cross-app tracking. Google's handling
+        of Firebase data is governed by its own terms and privacy policy.
+      </p>
+
+      <h2>The hosted web app</h2>
+      <p>
+        playarr.app does not use advertising cookies, analytics pixels or behavioural profiling.
+        The signed-in web app can store server addresses, device identifiers, names, access and
+        refresh tokens, interface preferences, download records and media, and playback progress
+        waiting to sync in your browser. Hosting and network providers may process ordinary
+        request information such as an IP address, timestamp, requested path and user agent for
+        delivery, reliability and abuse prevention. Playarr does not sell personal data.
+      </p>
+
+      <p>
+        When you sign in to the hosted web client, playarr.app sets a <code>playarr_signed_in</code>
+        cookie holding only <code>1</code>. It is used only to decide whether the home page shows
+        the app or this site. It is strictly necessary, is not used for tracking, and is removed
+        when you sign out.
+      </p>
+
+      <h2>The hosted Playarr service</h2>
+      <p>
+        <a href={LINKS.playarrApp}>playarr.app</a> hosts the Playarr web application
+        and can broker the first handshake between a new app and a server it has not met. That is
+        the one moment something passes through infrastructure the project operates.
+      </p>
+      <p>The short-lived link record contains only:</p>
+      <ul>
+        <li>the device secret generated by the app,</li>
+        <li>the server addresses you approve,</li>
+        <li>the client platform, and</li>
+        <li>a single-use device code.</li>
+      </ul>
+      <p>
+        It never contains a password, library data, a bearer token, or a refresh token. The record
+        expires after five minutes, with only a brief redemption grace period, and is then
+        deleted. After linking, the app talks to your server directly and nothing further
+        routes through the hosted service.
+      </p>
+
+      <h2>Security, retention and deletion</h2>
+      <p>
+        The hosted playarr.app service and the Google Play Android app require HTTPS. Sideloaded
+        builds can also connect to an HTTP address chosen by you or your administrator, so only
+        use an unencrypted address on a network you trust. Local records remain until removed in
+        the app, cleared by the operating system or removed by uninstalling. Server-side records
+        and backups follow the server operator's retention policy. Device-link records expire
+        automatically as described above.
+      </p>
+      <p>
+        To request deletion of an account and associated server-side data, follow the
+        <a href="/legal/account-deletion">account-deletion instructions</a>. Signing out does not
+        itself delete a server account or all local records.
+      </p>
+
+      <h2>Your choices</h2>
+      <p>
+        You can avoid the hosted linking service by entering a server address and signing in
+        directly. You can disable notifications, remove downloads, sign out, clear app storage or
+        uninstall the app at any time.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If any of the above changes, particularly if analytics are ever added to this site, or the
+        hosted service ever holds more than it does today, this page will be updated to say so
+        before the change ships. The effective date above identifies the current version.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy, or requests about data held by the hosted service, can go to
+        <a href="mailto:support@playarr.app">support@playarr.app</a>. Playarr is developed by
+        Thomas McFarlane. You can also use the contact method on the
+        <a href={LINKS.repo} rel="noopener">Playarr repository</a>. Do not put passwords, tokens
+        or private information in a public issue.
+      </p>
+    </div>
+  </Section>
+</BaseLayout>
+
+<style>
+  .prose {
+    max-width: var(--width-prose);
+  }
+
+  .prose h2 {
+    margin-top: var(--space-7);
+    font-size: var(--text-xl);
+  }
+
+  .legal-effective-date {
+    color: var(--ink-muted);
+    font-size: var(--text-sm);
+  }
+
+  .prose ul {
+    margin: 0 0 var(--space-4);
+    padding-inline-start: 1.35em;
+  }
+
+  .prose li {
+    margin-bottom: var(--space-2);
+  }
+</style>

@@ -1,0 +1,6 @@
+# Astro's generated types and content cache.
+.astro/
+node_modules
+dist
+.wrangler
+*.log

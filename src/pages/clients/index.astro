@@ -1,0 +1,21 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import ClientTiles from '../../components/ClientTiles.astro'
+import { clientCopy } from '../../data/platforms'
+---
+
+<BaseLayout title={clientCopy('documentTitle')} description={clientCopy('description')}>
+  <Section eyebrow={clientCopy('kicker')} title={clientCopy('title')} lede={clientCopy('description')}>
+    <ClientTiles />
+    <p class="foot">{clientCopy('footer')}</p>
+  </Section>
+</BaseLayout>
+
+<style>
+  .foot {
+    margin-top: var(--space-7);
+    color: var(--ink-muted);
+    font-size: var(--text-sm);
+  }
+</style>

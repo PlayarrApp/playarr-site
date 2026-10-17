@@ -1,0 +1,48 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+
+const PAGES = [
+  { href: '/legal/privacy', label: 'Privacy policy', note: 'How the apps, web app, server and linking service handle data.' },
+  { href: '/legal/terms', label: 'Terms of use', note: 'The conditions that apply when you use Playarr software and playarr.app.' },
+  { href: '/legal/acceptable-use', label: 'Acceptable use', note: 'The rules for using Playarr software and its public linking service.' },
+  { href: '/legal/licences', label: 'Licences and attribution', note: 'Open-source licensing, required notices and third-party attribution.' },
+  { href: '/legal/account-deletion', label: 'Account deletion', note: 'How to request deletion of a Playarr account and its data.' },
+]
+---
+
+<BaseLayout title="Legal" description="Privacy, terms, acceptable use, licences and account deletion for Playarr.">
+  <Section eyebrow="Legal" title="Legal">
+    <ul class="legal-list">
+      {
+        PAGES.map((page) => (
+          <li>
+            <a href={page.href}>{page.label}</a>
+            <span>{page.note}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </Section>
+</BaseLayout>
+
+<style>
+  .legal-list {
+    display: grid;
+    gap: var(--space-4);
+    max-width: var(--width-prose);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .legal-list a {
+    display: block;
+    font-weight: 700;
+  }
+
+  .legal-list span {
+    color: var(--ink-soft);
+    font-size: var(--text-sm);
+  }
+</style>

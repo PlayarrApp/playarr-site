@@ -1,0 +1,370 @@
+---
+import type { GetStaticPaths } from 'astro'
+import BaseLayout from '../../layouts/BaseLayout.astro'
+import Section from '../../components/Section.astro'
+import ClientTiles from '../../components/ClientTiles.astro'
+import PlatformIcon from '../../components/PlatformIcon.astro'
+import Pill from '../../components/Pill.astro'
+import ButtonLink from '../../components/ButtonLink.astro'
+import {
+  HUB_CLIENTS,
+  STATUS_TONE,
+  clientCopy,
+  statusLabel,
+  type HubClient,
+} from '../../data/platforms'
+import {
+  SERVER_ARCHES,
+  SERVER_FALLBACK_VERSION,
+  SERVER_INSTALL_COMMANDS,
+  SERVER_RELEASE_MANIFEST,
+  SMART_TV_INSTALL,
+  serverDownloadUrl,
+} from '../../data/client-install'
+
+export const getStaticPaths = (() =>
+  HUB_CLIENTS.map((client) => ({ params: { id: client.id }, props: { client } }))) satisfies GetStaticPaths
+
+interface Props {
+  client: HubClient
+}
+
+const { client } = Astro.props
+const id = client.id
+const name = clientCopy(`${id}.name`)
+const isSmartTv = id === 'webos' || id === 'tizen'
+const tv = id === 'webos' || id === 'tizen' ? SMART_TV_INSTALL[id] : undefined
+const page = (key: string, vars?: Record<string, string>) => clientCopy(`${id}Page.${key}`, vars)
+const steps = [1, 2, 3, 4] as const
+const title = id === 'vidaa' ? clientCopy('vidaaPage.documentTitle') : name
+---
+
+<BaseLayout
+  title={title}
+  fullTitle={`Playarr for ${name} · Playarr`}
+  description={client.social}
+>
+  <Section eyebrow={clientCopy('kicker')} title={clientCopy('title')}>
+    <ClientTiles activeId={id} />
+  </Section>
+
+  <Section tint>
+    <div class="detail">
+      {
+        id === 'vidaa' ? (
+          <>
+            <header class="hero">
+              <p class="eyebrow">{clientCopy('vidaaPage.kicker')}</p>
+              <h1>{clientCopy('vidaaPage.title')}</h1>
+              <p class="lede">{clientCopy('vidaaPage.description')}</p>
+              <Pill tone="neutral">{clientCopy('status.experimental')}</Pill>
+              <p class="note">{clientCopy('vidaaPage.experimentalNote')}</p>
+            </header>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('vidaaPage.storeKicker')}</p>
+              <h2>{clientCopy('vidaaPage.storeTitle')}</h2>
+              <p>{clientCopy('vidaaPage.storeDescription')}</p>
+              <div class="actions">
+                <ButtonLink href="/vidaa-store/">{clientCopy('vidaaPage.openStore')}</ButtonLink>
+              </div>
+              <p class="note">{clientCopy('vidaaPage.dnsChoice')}</p>
+            </section>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('vidaaPage.installKicker')}</p>
+              <h2>{clientCopy('vidaaPage.installTitle')}</h2>
+              <ol class="steps">
+                {steps.map((n) => (
+                  <li>
+                    <h3>{clientCopy(`vidaaPage.step${n}Title`)}</h3>
+                    <p>{clientCopy(`vidaaPage.step${n}Description`)}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('vidaaPage.aftercareKicker')}</p>
+              <h2>{clientCopy('vidaaPage.aftercareTitle')}</h2>
+              <p>{clientCopy('vidaaPage.aftercareDescription')}</p>
+            </section>
+          </>
+        ) : id === 'android' ? (
+          <header class="hero">
+            <p class="eyebrow">{clientCopy('androidPage.kicker')}</p>
+            <h1>{clientCopy('androidPage.title')}</h1>
+            <p class="lede">{clientCopy('androidPage.description')}</p>
+            <div class="actions">
+              <ButtonLink href="/downloads/android/playarr-android.apk">
+                {clientCopy('androidPage.download')}
+              </ButtonLink>
+            </div>
+          </header>
+        ) : tv ? (
+          <>
+            <header class="hero">
+              <PlatformIcon id={id} class="hero-icon" />
+              <p class="eyebrow">{clientCopy(`${id}.platform`)}</p>
+              <h1>{page('title')}</h1>
+              <p class="lede">{page('description')}</p>
+              <Pill tone="neutral">{clientCopy('status.developerPreview')}</Pill>
+              <p class="note">{page('packageNote')}</p>
+              <div class="actions">
+                <ButtonLink href={tv.downloadHref}>{page('download')}</ButtonLink>
+                <ButtonLink href={tv.sourceHref} variant="outline" external>
+                  {clientCopy('smartTvPage.openSource')}
+                </ButtonLink>
+              </div>
+            </header>
+            <section class="block">
+              <p class="eyebrow">{page('installKicker')}</p>
+              <h2>{page('installTitle')}</h2>
+              <p>{page('installDescription')}</p>
+              <ol class="steps">
+                {steps.map((n, index) => (
+                  <li>
+                    <h3>{page(`step${n}Title`)}</h3>
+                    <p>{page(`step${n}Description`)}</p>
+                    {tv.steps[index].length > 0 && (
+                      <ul class="commands" aria-label={clientCopy('smartTvPage.commandsAriaLabel', { step: String(n) })}>
+                        {tv.steps[index].map((command) => (
+                          <li><code>{command}</code></li>
+                        ))}
+                      </ul>
+                    )}
+                  </li>
+                ))}
+              </ol>
+              <p><a href={tv.officialGuideHref} rel="noopener">{page('officialGuide')}</a></p>
+            </section>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('smartTvPage.noteKicker')}</p>
+              <h2>{page('noteTitle')}</h2>
+              <p>{page('noteDescription', { appId: tv.appId })}</p>
+            </section>
+          </>
+        ) : id === 'server' ? (
+          <>
+            <header class="hero">
+              <PlatformIcon id={id} class="hero-icon" />
+              <p class="eyebrow">{clientCopy('serverPage.kicker')}</p>
+              <h1>{clientCopy('serverPage.title')}</h1>
+              <p class="lede">{clientCopy('serverPage.description')}</p>
+              <Pill tone="neutral">
+                <span data-server-version>{clientCopy('status.serverRelease', { version: SERVER_FALLBACK_VERSION })}</span>
+              </Pill>
+              <p class="note">{clientCopy('serverPage.packageNote')}</p>
+              <div class="actions">
+                {SERVER_ARCHES.map((arch) => (
+                  <ButtonLink href={serverDownloadUrl(arch)} variant={arch === 'amd64' ? 'solid' : 'outline'}>
+                    {clientCopy(`serverPage.download${arch === 'amd64' ? 'Amd64' : 'Arm64'}`)}
+                  </ButtonLink>
+                ))}
+              </div>
+              <ul class="checksums" aria-label={clientCopy('serverPage.checksumLabel')} data-server-manifest={SERVER_RELEASE_MANIFEST} data-version-template={clientCopy('status.serverRelease', { version: '{version}' })}>
+                {SERVER_ARCHES.map((arch) => (
+                  <li data-arch={arch}>
+                    <span>{`linux-${arch}`}</span>
+                    <a href={`${serverDownloadUrl(arch)}.sha256`} download>{clientCopy('serverPage.checksumFile')}</a>
+                  </li>
+                ))}
+              </ul>
+              <p class="note">{clientCopy('serverPage.verifyNote')}</p>
+            </header>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('serverPage.requirementsKicker')}</p>
+              <h2>{clientCopy('serverPage.requirementsTitle')}</h2>
+              <ol class="steps">
+                {([1, 2, 3, 4] as const).map((n) => (
+                  <li>
+                    <h3>{clientCopy(`serverPage.req${n}Title`)}</h3>
+                    <p>{clientCopy(`serverPage.req${n}Description`)}</p>
+                  </li>
+                ))}
+              </ol>
+            </section>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('serverPage.installKicker')}</p>
+              <h2>{clientCopy('serverPage.installTitle')}</h2>
+              <p>{clientCopy('serverPage.installDescription')}</p>
+              <ol class="steps">
+                {(['docker', 'compose', 'systemd', 'helm'] as const).map((method) => (
+                  <li>
+                    <h3>{clientCopy(`serverPage.${method}Title`)}</h3>
+                    <p>{clientCopy(`serverPage.${method}Description`)}</p>
+                    <ul class="commands" aria-label={clientCopy(`serverPage.${method}Title`)}>
+                      {SERVER_INSTALL_COMMANDS[method].map((command) => (
+                        <li><code>{command}</code></li>
+                      ))}
+                    </ul>
+                  </li>
+                ))}
+              </ol>
+            </section>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('serverPage.connectKicker')}</p>
+              <h2>{clientCopy('serverPage.connectTitle')}</h2>
+              <p>{clientCopy('serverPage.connectDescription')}</p>
+              <h3>{clientCopy('serverPage.relayTitle')}</h3>
+              <p>{clientCopy('serverPage.relayDescription')}</p>
+              <ul class="commands" aria-label={clientCopy('serverPage.relayTitle')}>
+                {SERVER_INSTALL_COMMANDS.relay.map((command) => (
+                  <li><code>{command}</code></li>
+                ))}
+              </ul>
+            </section>
+            <section class="block">
+              <p class="eyebrow">{clientCopy('serverPage.privacyKicker')}</p>
+              <h2>{clientCopy('serverPage.privacyTitle')}</h2>
+              <p>{clientCopy('serverPage.privacyDescription')}</p>
+            </section>
+          </>
+        ) : (
+          <>
+            <header class="hero">
+              <PlatformIcon id={id} class="hero-icon" />
+              <p class="eyebrow">{clientCopy(`${id}.platform`)}</p>
+              <h1>{name}</h1>
+              <p class="lede">
+                {client.descriptionKey ? clientCopy(client.descriptionKey) : clientCopy('notYetPublished')}
+              </p>
+              <Pill tone={STATUS_TONE[client.status]}>{statusLabel(client.status)}</Pill>
+              {client.downloadPath && (
+                <div class="actions">
+                  <ButtonLink href={client.downloadPath}>
+                    {id === 'roku' ? clientCopy('rokuPage.download') : clientCopy('downloadApp')}
+                  </ButtonLink>
+                </div>
+              )}
+            </header>
+            {id === 'roku' && (
+              <>
+                <section class="block">
+                  <p class="eyebrow">{clientCopy('rokuPage.installKicker')}</p>
+                  <h2>{clientCopy('rokuPage.installTitle')}</h2>
+                  <p>{clientCopy('rokuPage.installDescription')}</p>
+                  <ol class="steps">
+                    {steps.map((n) => (
+                      <li>
+                        <h3>{clientCopy(`rokuPage.step${n}Title`)}</h3>
+                        <p>{clientCopy(`rokuPage.step${n}Description`)}</p>
+                      </li>
+                    ))}
+                  </ol>
+                  <p>
+                    <a href="https://developer.roku.com/dev/docs/developer-setup" rel="noopener">
+                      {clientCopy('rokuPage.officialGuide')}
+                    </a>
+                  </p>
+                </section>
+                <section class="block">
+                  <p class="eyebrow">{clientCopy('rokuPage.noteKicker')}</p>
+                  <h2>{clientCopy('rokuPage.noteTitle')}</h2>
+                  <p>{clientCopy('rokuPage.noteDescription')}</p>
+                </section>
+              </>
+            )}
+          </>
+        )
+      }
+      <p class="note">{clientCopy('downloadNote')}</p>
+      <p class="note">{clientCopy('footer')}</p>
+    </div>
+  </Section>
+</BaseLayout>
+
+{
+  id === 'server' && (
+    <script>
+      // Same-origin release manifest published by the release workflow; the static fallbacks stay if it cannot load.
+      const SHA256 = /^[0-9a-f]{64}$/
+      const list = document.querySelector<HTMLElement>('[data-server-manifest]')
+      if (list?.dataset.serverManifest) {
+        fetch(list.dataset.serverManifest)
+          .then((response) => (response.ok ? response.json() : null))
+          .then((body) => {
+            if (!body || typeof body.version !== 'string' || !/^\d+\.\d+\.\d+[0-9A-Za-z.-]*$/.test(body.version)) return
+            const label = document.querySelector('[data-server-version]')
+            if (label) label.textContent = (list.dataset.versionTemplate ?? '{version}').replace('{version}', body.version)
+            for (const item of list.querySelectorAll<HTMLElement>('li[data-arch]')) {
+              const sha = body.assets?.[item.dataset.arch ?? '']?.sha256
+              if (typeof sha === 'string' && SHA256.test(sha)) {
+                const code = document.createElement('code')
+                code.textContent = `SHA-256 ${sha}`
+                item.querySelector('a')?.replaceWith(code)
+              }
+            }
+          })
+          .catch(() => undefined)
+      }
+    </script>
+  )
+}
+
+<style>
+  .detail {
+    max-width: var(--width-prose);
+  }
+
+  .hero :global(.hero-icon) {
+    width: 56px;
+    height: 56px;
+    color: var(--brand);
+  }
+
+  .block {
+    margin-top: var(--space-8);
+  }
+
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-block: var(--space-4);
+  }
+
+  .note {
+    color: var(--ink-soft);
+    font-size: var(--text-sm);
+  }
+
+  .steps {
+    padding-inline-start: 1.35em;
+  }
+
+  .steps li {
+    margin-bottom: var(--space-5);
+  }
+
+  .commands {
+    margin: var(--space-3) 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .commands li {
+    margin: 0 0 var(--space-2);
+  }
+
+  .commands code {
+    display: block;
+    padding: var(--space-2) var(--space-3);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-sm, 6px);
+    background: var(--surface-strong);
+    font-size: var(--text-xs);
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .checksums {
+    margin: var(--space-4) 0;
+    padding: 0;
+    list-style: none;
+    font-size: var(--text-sm);
+  }
+
+  .checksums li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+</style>
