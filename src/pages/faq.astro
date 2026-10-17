@@ -2,7 +2,6 @@
 import BaseLayout from '../layouts/BaseLayout.astro'
 import Section from '../components/Section.astro'
 import Icon from '../components/Icon.astro'
-import { LINKS } from '../consts'
 
 const groupIcons = ['play', 'server', 'grid', 'lock', 'users'] as const
 const groupTones = ['brand', 'amber', 'teal', 'violet', 'brand'] as const
@@ -143,8 +142,7 @@ const groups = [
     </div>
 
     <p class="after">
-      Something not covered? Ask in the
-      <a href={LINKS.discussions} rel="noopener">project discussions</a>, or read
+      Something not covered? Read
       <a href="/legal/acceptable-use">what this project will and will not help with</a>.
     </p>
   </Section>

@@ -29,7 +29,7 @@ Two Docker networks are used: `playarr-net` carries everything, and `playarr-edg
 ## 1. Get the repository
 
 ```bash
-git clone https://github.com/ThomasMcFarlane/playarr.git
+git clone https://github.com/PlayarrApp/playarr.git
 cd playarr
 ```
 

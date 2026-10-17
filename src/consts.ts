@@ -22,10 +22,9 @@ export const LINKS = {
   playarrApp: '/login',
   /** Clients hub, served by this site. */
   playarrClients: '/clients',
-  repo: 'https://github.com/ThomasMcFarlane/playarr',
-  issues: 'https://github.com/ThomasMcFarlane/playarr/issues',
-  discussions: 'https://github.com/ThomasMcFarlane/playarr/discussions',
-  licence: 'https://github.com/ThomasMcFarlane/playarr/blob/main/LICENSE',
+  repo: 'https://github.com/PlayarrApp/playarr',
+  issues: 'https://github.com/PlayarrApp/playarr/issues',
+  licence: 'https://github.com/PlayarrApp/playarr/blob/main/LICENSE',
 } as const
 
 export const NAV: ReadonlyArray<{ href: string; label: string }> = [
