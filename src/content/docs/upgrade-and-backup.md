@@ -223,7 +223,7 @@ Practical consequences worth planning around:
 ## Upgrade procedures
 
 > Releases are published as `v<version>` GitHub Releases with the server tarballs, and the image
-> is `ghcr.io/thomasmcfarlane/playarr:<version>`. The Compose files and Helm chart may still
+> is `ghcr.io/playarrapp/playarr:<version>`. The Compose files and Helm chart may still
 > reference another image name (`ghcr.io/playarr/playarr`); point them at the published image or
 > your own build.
 

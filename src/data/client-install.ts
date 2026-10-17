@@ -57,7 +57,7 @@ export const SMART_TV_INSTALL = {
   },
 } as const
 
-const SERVER_IMAGE = 'ghcr.io/thomasmcfarlane/playarr'
+const SERVER_IMAGE = 'ghcr.io/playarrapp/playarr'
 
 const SERVER_DOCKER_COMPOSE = `services:
   playarr:
