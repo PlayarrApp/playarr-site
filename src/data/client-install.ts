@@ -8,11 +8,11 @@ export const SMART_TV_INSTALL = {
     appId: 'com.playarr.tv',
     downloadHref: '/downloads/webos/playarr-webos.ipk',
     officialGuideHref: 'https://webostv.developer.lge.com/develop/getting-started/developer-mode-app',
-    sourceHref: 'https://github.com/ThomasMcFarlane/playarr/tree/main/clients/tv-web/apps/tv-webos',
+    sourceHref: 'https://github.com/PlayarrApp/playarr/tree/main/clients/tv-web/apps/tv-webos',
     steps: [
       [],
       [
-        'git clone https://github.com/ThomasMcFarlane/playarr.git',
+        'git clone https://github.com/PlayarrApp/playarr.git',
         'cd playarr/clients/tv-web',
         'npm install -g pnpm@11.13.0',
         'pnpm install --frozen-lockfile',
@@ -34,12 +34,12 @@ export const SMART_TV_INSTALL = {
     appId: 'StrmarrTV1.Playarr Server',
     downloadHref: '/downloads/tizen/playarr-tizen.wgt',
     officialGuideHref: 'https://developer.samsung.com/smarttv/develop/getting-started/using-sdk/tv-device.html',
-    sourceHref: 'https://github.com/ThomasMcFarlane/playarr/tree/main/clients/tv-web/apps/tv-tizen',
+    sourceHref: 'https://github.com/PlayarrApp/playarr/tree/main/clients/tv-web/apps/tv-tizen',
     steps: [
       [],
       [],
       [
-        'git clone https://github.com/ThomasMcFarlane/playarr.git',
+        'git clone https://github.com/PlayarrApp/playarr.git',
         'cd playarr/clients/tv-web',
         'npm install -g pnpm@11.13.0',
         'pnpm install --frozen-lockfile',

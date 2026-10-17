@@ -80,7 +80,7 @@ The app also updates itself outside any store: it polls `https://playarr.app/dow
 Requires JDK 21 and the Android SDK. Point `JAVA_HOME` at your own JDK 21 installation, the path below is an example, not a fixed location:
 
 ```bash
-git clone https://github.com/ThomasMcFarlane/playarr.git
+git clone https://github.com/PlayarrApp/playarr.git
 cd playarr/clients/android
 export JAVA_HOME=<PATH-TO-YOUR-JDK-21>
 ./gradlew :app:testDebugUnitTest :app:assembleDebug :app:lintDebug
@@ -140,7 +140,7 @@ Roku's own guide: <https://developer.roku.com/dev/docs/developer-setup>
 Python 3 and `zip` are the only requirements:
 
 ```bash
-git clone https://github.com/ThomasMcFarlane/playarr.git
+git clone https://github.com/PlayarrApp/playarr.git
 cd playarr/clients/roku
 make validate
 make package
@@ -184,7 +184,7 @@ curl -fL https://playarr.app/downloads/webos/playarr-webos.ipk -o playarr-webos.
 Until then, build the identical IPK yourself. This needs **Node.js 20 or newer** (the workspace declares `engines.node >= 20`):
 
 ```bash
-git clone https://github.com/ThomasMcFarlane/playarr.git
+git clone https://github.com/PlayarrApp/playarr.git
 cd playarr/clients/tv-web
 npm install -g pnpm@11.13.0
 pnpm install --frozen-lockfile
@@ -235,7 +235,7 @@ Open **Apps → App Settings**, enter `12345`, turn Developer Mode on, enter you
 The repository ships a `package:wgt` script that builds the app, copies `config.xml` into `dist/`, invokes `tizen package` with your certificate profile and copies the result to a stable filename. It needs **Node.js 20 or newer** and the `tizen` CLI on your `PATH`:
 
 ```bash
-git clone https://github.com/ThomasMcFarlane/playarr.git
+git clone https://github.com/PlayarrApp/playarr.git
 cd playarr/clients/tv-web
 npm install -g pnpm@11.13.0
 pnpm install --frozen-lockfile
@@ -276,7 +276,7 @@ What is in the tree today:
 Both consume the same `PlayarrKit` Swift package for API models, networking, device-code authentication and AVFoundation playback. If you have Xcode and want to run the tvOS app on a simulator:
 
 ```bash
-git clone https://github.com/ThomasMcFarlane/playarr.git
+git clone https://github.com/PlayarrApp/playarr.git
 cd playarr/clients/apple-tv
 xcodegen generate
 xcodebuild -project PlayarrTV.xcodeproj -scheme PlayarrTV \

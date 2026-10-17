@@ -42,7 +42,7 @@ Both ports are the same as everywhere else:
 The chart's default `image.repository` is a placeholder. Build one from the repository root (the Dockerfile's build context must be the root, because it also builds the web assets):
 
 ```bash
-git clone https://github.com/ThomasMcFarlane/playarr.git
+git clone https://github.com/PlayarrApp/playarr.git
 cd playarr
 
 docker build \
