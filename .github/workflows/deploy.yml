@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  schedule:
+    # Hourly rebuild so /clients picks up a new release's clients.json.
+    - cron: '17 * * * *'
 
 permissions:
   contents: read

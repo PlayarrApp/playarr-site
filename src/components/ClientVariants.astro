@@ -1,0 +1,58 @@
+---
+import Pill from './Pill.astro'
+import { groupByFamily, loadManifest, ROUTE_LABEL, ROUTE_TONE } from '../data/variants'
+
+const manifest = await loadManifest()
+const groups = groupByFamily(manifest)
+---
+
+<section class="variants" aria-labelledby="variants-title">
+  <h2 id="variants-title">Every client variant</h2>
+  <p class="meta">Release {manifest.version}. Each row is one install route with its own minimum system.</p>
+  {
+    groups.map(([family, items]) => (
+      <div class="family">
+        <h3>{family}</h3>
+        <ul>
+          {items.map((v) => (
+            <li class="row">
+              <div class="text">
+                <strong>{v.name}</strong>
+                <span class="sub">Requires {v.min_os} · v{manifest.version}</span>
+                {v.note && <span class="sub">{v.note}</span>}
+              </div>
+              <Pill tone={ROUTE_TONE[v.shown]}>{ROUTE_LABEL[v.shown]}</Pill>
+              {v.href && (
+                <a class="link" href={v.href}>
+                  {ROUTE_LABEL[v.shown]}<span class="sr"> {v.name}</span>
+                </a>
+              )}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))
+  }
+</section>
+
+<style>
+  .variants { margin-top: var(--space-7); }
+  .meta { color: var(--ink-muted); font-size: var(--text-sm); }
+  .family { margin-top: var(--space-5); }
+  ul { list-style: none; margin: var(--space-3) 0 0; padding: 0; display: grid; gap: var(--space-3); }
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-3);
+    padding: var(--space-4);
+    border: 1px solid var(--line);
+    border-radius: var(--radius-lg);
+    background: var(--surface-strong);
+  }
+  .text { display: flex; flex-direction: column; gap: 2px; flex: 1 1 14rem; min-width: 0; }
+  .sub { color: var(--ink-muted); font-size: var(--text-sm); }
+  .link { color: var(--brand); font-weight: 700; text-decoration: underline; }
+  .link:focus-visible { outline: 2px solid var(--brand); outline-offset: 2px; }
+  .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+</style>
