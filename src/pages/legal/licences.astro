@@ -172,6 +172,18 @@ import { LINKS, SITE } from '../../consts'
         <li>Scalar API Reference, used in the admin app (MIT)</li>
       </ul>
 
+      <h3>This website (Astro)</h3>
+      <p>
+        The direct production dependencies of this site. A CI check keeps this list in step with
+        <code>package.json</code>.
+      </p>
+      <ul>
+        <li data-pkg="astro">Astro (MIT)</li>
+        <li data-pkg="@astrojs/mdx">@astrojs/mdx (MIT)</li>
+        <li data-pkg="@astrojs/sitemap">@astrojs/sitemap (MIT)</li>
+        <li data-pkg="sharp">sharp (Apache-2.0), used at build time for image processing; its prebuilt libvips binaries are LGPL-3.0-or-later</li>
+      </ul>
+
       <h3>Container images</h3>
       <ul>
         <li>FFmpeg, installed in the server image from the Debian distribution (GPL-2.0-or-later, see above)</li>
