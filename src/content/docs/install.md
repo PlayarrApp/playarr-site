@@ -45,7 +45,7 @@ Playarr is SQLite-only: every node owns one SQLite database file, and there is n
 - **`ffmpeg` and `ffprobe` on `PATH`.** Playarr shells out to both for thumbnails, subtitle extraction and on-demand transcoding. The container image installs `ffmpeg` for you; a bare-metal install must supply it. Override the executables with `PLAYARR_FFMPEG_BINARY` and `PLAYARR_FFPROBE_BINARY` if they live somewhere unusual.
 - **CPU headroom for transcoding.** The on-demand transcode path uses the software `libx264` encoder. There is no VAAPI, NVENC, QSV or VideoToolbox integration anywhere in the backend, and none of the shipped Compose or Kubernetes manifests pass through `/dev/dri` or request a GPU. Size the box on the assumption that transcoding is done on the CPU.
 - **A `DATABASE_URL`.** The only genuinely required variable. The process fails at startup if it is unset or empty.
-- **At least one *arr instance.** Playarr integrates with the *arr suite for library management and builds its catalogue by reconciling against the apps you already run. It does not scan folders itself, so a deployment with nothing registered has an empty catalogue. You register instances after first boot, through the admin API or Playarr Admin, nothing needs to be in place before you install.
+- **At least one library-manager instance.** Playarr integrates with your library managers and builds its catalogue by reconciling against the apps you already run. It does not scan folders itself, so a deployment with nothing registered has an empty catalogue. You register instances after first boot, through the admin API or Playarr Admin, nothing needs to be in place before you install.
 - **Two ports.** `8484/tcp` for the application (`PLAYARR_HTTP_BIND_ADDR`) and `9090/tcp` for the Prometheus endpoint (`PLAYARR_METRICS_BIND_ADDR`). Both take a full socket address, not a bare port number. `/metrics` should never be reachable from the public edge.
 - **A long-lived signing secret.** Set `PLAYARR_JWT_SECRET` to at least 32 bytes. Leave it unset and the server derives a stable secret from its persisted node identity, so sessions survive restarts, but each node derives a different one and tokens are not honoured across nodes.
 
@@ -57,13 +57,13 @@ openssl rand -hex 32
 
 ## How media storage is expected to be laid out
 
-Playarr never discovers files on its own. Each media file's path arrives from the *arr instance that owns it, exactly as that app reports it, and the Playarr process then has to be able to `open()` that path on its own filesystem.
+Playarr never discovers files on its own. Each media file's path arrives from the library-manager instance that owns it, exactly as that app reports it, and the Playarr process then has to be able to `open()` that path on its own filesystem.
 
 That gives you three ways to lay things out, in order of preference:
 
 ### 1. Co-locate, and mount at the identical path
 
-The intended arrangement: Playarr runs on (or mounts) the same storage the *arr apps see, at the same absolute path. If Sonarr reports `/mnt/media/tv/…`, then `/mnt/media/tv/…` must resolve for Playarr too. Nothing else to configure.
+The intended arrangement: Playarr runs on (or mounts) the same storage the library managers see, at the same absolute path. If Sonarr reports `/mnt/media/tv/…`, then `/mnt/media/tv/…` must resolve for Playarr too. Nothing else to configure.
 
 A **read-only** mount is sufficient for playback and for on-demand transcoding, transcode output is written to the process's temporary directory (`$TMPDIR/playarr-transcode`), never alongside your files.
 
@@ -82,7 +82,7 @@ services:
 If the mount point differs, a network mount at a different local path, say, set both halves of the substitution. Both must be set; setting only one is ignored and the original path is used unchanged. Only a single prefix pair is supported.
 
 ```bash
-PLAYARR_MEDIA_REMOTE_ROOT=/data/media     # the prefix the *arr app reports
+PLAYARR_MEDIA_REMOTE_ROOT=/data/media     # the prefix the library manager reports
 PLAYARR_MEDIA_LOCAL_ROOT=/mnt/nas/media   # where that same root is mounted here
 ```
 
@@ -117,7 +117,7 @@ There is no separate API executable, worker executable or coordinator executable
 | --- | --- | --- | --- |
 | `all` *(default)* | Yes | Yes | What the single-server install always runs; the systemd unit hard-codes it. |
 | `api` | Yes | No | Catalogue, playback negotiation, authentication, admin routes, and Playarr Admin at `/` when built assets are present. |
-| `worker` | No, only `GET /healthz` | Yes | *arr reconciliation pollers, peer-sync pollers and background transcode dispatch. |
+| `worker` | No, only `GET /healthz` | Yes | library-manager reconciliation pollers, peer-sync pollers and background transcode dispatch. |
 
 Anything other than `all`, `api` or `worker` is a hard startup failure. The `/metrics` listener is spawned by every role, unconditionally.
 
@@ -137,4 +137,4 @@ Anything other than `all`, `api` or `worker` is a hard startup failure. The `/me
 | Containers, one host | [Install with Docker Compose](/docs/install/docker-compose) |
 | A cluster you already run | [Install on Kubernetes](/docs/install/kubernetes) |
 
-Whichever you pick, continue to **[First run](/docs/first-run)**, retrieving the generated admin password from the logs, connecting your *arr instances, and signing in from a Playarr client.
+Whichever you pick, continue to **[First run](/docs/first-run)**, retrieving the generated admin password from the logs, connecting your library-manager instances, and signing in from a Playarr client.

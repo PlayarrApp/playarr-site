@@ -1,11 +1,11 @@
 /**
  * Library-management tools Playarr can read from.
  *
- * Only the six general-media *arr applications are listed. Playarr's source
+ * Only the six general-media library managers are listed. Playarr's source
  * enum contains further variants that are deliberately not surfaced on this
  * site. Every description here must stay on the correct side of one line:
  * Playarr reads what these tools have already organised. It performs no
- * indexing and obtains no media itself.
+ * indexing and downloads nothing itself.
  *
  * Accuracy note, verified against the backend: Playarr has NO filesystem
  * scanner. The catalogue write path is fed entirely by playarr-arr-sync, so

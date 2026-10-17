@@ -10,7 +10,7 @@ This is the smallest way to run Playarr: one compiled binary, one SQLite file, o
 
 Playarr is SQLite-only: `DATABASE_URL` must be a `sqlite:` URL, and a `postgres://` URL is rejected at startup. The coordinator is in-process and the cache is in-memory. To run more than one server, give each its own database and connect them with peer sync.
 
-> Playarr reads a library you already have on disk and reconciles metadata from *arr apps you already run. It plays what is there; it does not put anything there.
+> Playarr reads a library you already have on disk and reconciles metadata from library managers you already run. It plays what is there; it does not put anything there.
 
 ## Before you start
 
@@ -166,7 +166,7 @@ These are the variables that matter on a single server. Every one is read at sta
 | `PLAYARR_DOWNLOAD_MAX_BYTES` | unset | Cap on the staging directory's total size (plain bytes, or a suffix such as `20Gi`). A conversion that would exceed it fails with a clear message. |
 | `PLAYARR_FFMPEG_BINARY` | `ffmpeg` | Override the executable used for transcoding and subtitle extraction. |
 | `PLAYARR_FFPROBE_BINARY` | `ffprobe` | Override the executable used for container probing. |
-| `PLAYARR_MEDIA_REMOTE_ROOT` | unset | Path prefix as an *arr app reports it. Must be set together with the next one. |
+| `PLAYARR_MEDIA_REMOTE_ROOT` | unset | Path prefix as a library manager reports it. Must be set together with the next one. |
 | `PLAYARR_MEDIA_LOCAL_ROOT` | unset | Where that same root is mounted on this host. If only one is set, the substitution is skipped. |
 | `PLAYARR_TLS_CERT_PATH` / `PLAYARR_TLS_KEY_PATH` | unset | Set both or neither; see [HTTPS](#optional-https). |
 | `PLAYARR_ACME_DOMAIN` | unset | Automatic Let's Encrypt HTTPS; see [HTTPS](#optional-https). |
@@ -353,7 +353,7 @@ If you prefer your own proxy, leave both sets unset and reverse-proxy to `127.0.
 
 ## Optional: co-host Playarr Admin
 
-Playarr Admin is the operator-facing React UI, served by the same binary at `/` on the same origin and port as the API, the same pattern the *arr apps use. If no `index.html` is found at the resolved path, the server serves the API only and logs an informational line saying so. Nothing is installed for you: `install.sh` copies the binary and the units and nothing else.
+Playarr Admin is the operator-facing React UI, served by the same binary at `/` on the same origin and port as the API, the same pattern the library managers use. If no `index.html` is found at the resolved path, the server serves the API only and logs an informational line saying so. Nothing is installed for you: `install.sh` copies the binary and the units and nothing else.
 
 Building it needs Node 20 or newer and pnpm 9 or newer; the workspace pins pnpm through Corepack. From a checkout of the repository:
 
@@ -411,4 +411,4 @@ Stopping the service first is the simple way to get a consistent copy of a WAL-m
 
 ## Next
 
-The service is running, the database exists, and you have admin credentials. Continue to [First run](/docs/first-run) to sign in, register the *arr instances Playarr should reconcile metadata from, and connect your first Playarr client.
+The service is running, the database exists, and you have admin credentials. Continue to [First run](/docs/first-run) to sign in, register the library-manager instances Playarr should reconcile metadata from, and connect your first Playarr client.

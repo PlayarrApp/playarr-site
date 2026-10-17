@@ -66,14 +66,14 @@ services:
       # derived from the node identity is used instead.
       PLAYARR_JWT_SECRET: ${PLAYARR_JWT_SECRET:?Set PLAYARR_JWT_SECRET in infra/docker/.env}
       PLAYARR_AUTH_MODE: full-account
-      # Only if the *arr apps report paths that differ from where this
+      # Only if the library managers report paths that differ from where this
       # host can read them. Both must be set.
       # PLAYARR_MEDIA_REMOTE_ROOT: /data
       # PLAYARR_MEDIA_LOCAL_ROOT: /srv/media
       # Extracted-subtitle cache; needs a volume (see below).
       PLAYARR_SUBTITLE_CACHE_DIR: /data/playarr-cache/subtitles
     volumes:
-      # Your media, read-only. Mount it at the SAME path the *arr apps use
+      # Your media, read-only. Mount it at the SAME path the library managers use
       # and no path mapping is needed at all.
       - /srv/media:/srv/media:ro
       - playarr_prod_subtitle_cache:/data/playarr-cache/subtitles
@@ -92,7 +92,7 @@ Compose merges `environment` maps and `volumes` lists across `-f` files, so the 
 
 > **Every writable path must be a volume or a tmpfs.** The base file sets `read_only: true` on the `playarr` service. Only `/tmp` (tmpfs) and explicitly mounted volumes can be written.
 
-> **Mount media at the identical path the *arr apps report, and no path mapping is needed.** Only reach for `PLAYARR_MEDIA_REMOTE_ROOT` / `PLAYARR_MEDIA_LOCAL_ROOT` when you cannot. A single prefix pair is supported.
+> **Mount media at the identical path the library managers report, and no path mapping is needed.** Only reach for `PLAYARR_MEDIA_REMOTE_ROOT` / `PLAYARR_MEDIA_LOCAL_ROOT` when you cannot. A single prefix pair is supported.
 
 > **`/data` is the one path you cannot use for media.** The base file mounts volumes beneath `/data`, and Docker cannot create those nested mount points inside a read-only bind mount at `/data`. Mount the tree elsewhere and use the prefix substitution pair.
 
