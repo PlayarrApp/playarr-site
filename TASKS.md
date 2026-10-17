@@ -7,7 +7,7 @@ ETA: 2026-10-18 18:00 ICT
 
 | ID | Task | Status | Owner | Branch | Depends | ETA | Notes |
 |---|---|---|---|---|---|---|---|
-| 5 | Serve this Worker on playarr.app: the `playarr-web` Worker forwards signed-out `/`, `/docs`, `/legal`, `/clients`, `/features`, `/faq`, `/apps`, `/integrations`, `/_site/*`, sitemaps and `robots.txt` here through its `SITE` service binding | blocked | | | | | Waits on the Playarr repository's routing change (ThomasMcFarlane/playarr PR [#1651](https://github.com/ThomasMcFarlane/playarr/pull/1651)), owned by another agent. Checked 2026-10-17: playarr.app `/`, `/legal/terms` and `/features` are still served by the web app, not this Worker. That routing change also needs trailing-slash forms (`/features/` and similar) in `run_worker_first`. |
+| 5 | Serve this Worker on playarr.app: the `playarr-web` Worker forwards signed-out `/`, `/docs`, `/legal`, `/clients`, `/features`, `/faq`, `/apps`, `/integrations`, `/_site/*`, sitemaps and `robots.txt` here through its `SITE` service binding | blocked | | | | | Waits on the Playarr repository's routing change (PlayarrApp/playarr PR [#53](https://github.com/PlayarrApp/playarr/pull/53), moved from ThomasMcFarlane/playarr #1651), owned by another agent. Checked 2026-10-17: playarr.app `/`, `/legal/terms` and `/features` are still served by the web app, not this Worker. That routing change also needs trailing-slash forms (`/features/` and similar) in `run_worker_first`. |
 | 6 | Verify on playarr.app once live: signed-out `/` shows this site, signed-in `/` (cookie `playarr_signed_in=1`) shows the app, every marketing route returns 200, `/features/` redirects to `/features`, unknown paths return 404 | todo | | | 3.5 | | |
 
 ## 2. Legal pages and copy (Playarr epic 60, site part)
