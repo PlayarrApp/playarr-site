@@ -31,8 +31,10 @@ import { INTEGRATIONS, TDARR } from '../data/integrations'
         lists.
       </p>
       <p>
-        <strong>What Playarr Server does not do:</strong> it performs no indexing and obtains no media itself. When a user with request rights asks for a title, it passes
-        the request to a request manager or, if none is configured, to your own Radarr or Sonarr.
+        <strong>What Playarr Server does not do:</strong> it performs no indexing and obtains no media itself. When a user with request rights asks for a title, it sends
+        the request where the administrator's "Where requests go" setting says. The default is
+        Direct, which asks your own Radarr or Sonarr to add the title and look for it. Ombi or
+        Seerr receive requests only if chosen there.
         What those applications then do is set up and controlled by you, and is your responsibility. It is a
         playback, catalogue and metadata layer over storage you already control.
       </p>

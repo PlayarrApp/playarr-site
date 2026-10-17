@@ -12,9 +12,9 @@ finds into the catalogue your Playarr clients browse.
 
 > **What Playarr does not do.** Playarr supplies no media and itself obtains none. Reading the
 > library is done with HTTP `GET` requests only. The one write is the request flow: when a user with
-> request rights asks for a title that is not in the library and no request manager is configured,
-> Playarr sends one `POST` (`add_movie` to Radarr, `add_series` to Sonarr) asking that application to
-> add and monitor the title and search for it. Whether and how Radarr or Sonarr then searches for or
+> request rights asks for a title that is not in the library, it goes where the administrator's
+> "Where requests go" setting in Playarr Admin sends it. The default is Direct, where Playarr sends one `POST` (`add_movie` to Radarr, `add_series` to Sonarr) asking that application to
+> add and monitor the title and search for it (Ombi or Seerr receive requests only if chosen there; "Direct + mirror" does both). Whether and how Radarr or Sonarr then searches for or
 > acquires anything is set up and controlled by you, and is your responsibility. If you do not want
 > this, leave the request permission off for accounts (it is off by default, administrators can always
 > request, and `PLAYARR_REQUESTS_ALLOW_ALL_USERS` grants it to everyone only if you set it).

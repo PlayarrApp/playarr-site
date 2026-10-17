@@ -35,10 +35,13 @@ import { LINKS, SITE } from '../../consts'
       </p>
       <p>
         When a user with request rights asks for a title that is not in the library, Playarr
-        Server passes the request on. It goes either to a request manager (an Ombi or Seerr style
-        application) that the operator has configured or, if none is configured, directly to the
-        operator's own library manager (Radarr or Sonarr), asking it to add the title and look
-        for it. Whether and how those applications search for or acquire anything is set up and
+        Server passes the request on to wherever the administrator's "Where requests go" setting in
+        Playarr Admin sends it. The default is Direct: the server asks the operator's own library
+        manager (Radarr or Sonarr) to add the title and look for it. An Ombi or Seerr style
+        request manager receives requests only when an administrator chooses it there (if the
+        chosen one is not enabled, the request fails, with no fallback). "Direct + mirror" sends to
+        Radarr or Sonarr and also copies an approved request into every enabled request manager.
+        Whether and how those applications search for or acquire anything is set up and
         controlled by the operator, under the operator's responsibility. Playarr itself obtains
         no media.
       </p>
