@@ -26,3 +26,4 @@ ETA: 2026-10-17 15:40 ICT
 |---|---|---|---|---|---|---|---|
 | 1 | Fresh public repository with the marketing site, legal pages, docs and the `/clients` hub | done | | | | | Single initial commit 8e28a79; delete_branch_on_merge on. |
 | 2 | Deploy as the assets-only `playarr-site` Worker through GitHub Actions on hosted runners only, gated to `main` by the `production` environment | done | | | | | Deploy run [39017982042](https://github.com/PlayarrApp/playarr-site/actions/runs/39017982042); no public route by design (`workers_dev` false, `drop-trailing-slash`). |
+| 8 | Repository links point at PlayarrApp/playarr, not the old ThomasMcFarlane/playarr | in_review | | repo-links | | 2026-10-17 22:00 ICT | PR [#10](https://github.com/PlayarrApp/playarr-site/pull/10). Owner decision 2026-10-17: the FAQ discussions link is removed (Discussions is off on PlayarrApp/playarr); `LINKS.discussions` deleted. |
