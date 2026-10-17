@@ -5,12 +5,15 @@
  * enum contains further variants that are deliberately not surfaced on this
  * site. Every description here must stay on the correct side of one line:
  * Playarr reads what these tools have already organised. It performs no
- * indexing and downloads nothing itself.
+ * indexing and obtains no media itself.
  *
- * Accuracy note, verified against the backend: Playarr has NO filesystem
- * scanner. The catalogue write path is fed entirely by playarr-arr-sync, so
- * a server with no connection registered has an empty catalogue. Never
- * describe these integrations as optional extras that merely improve matching.
+ * Accuracy note, verified against the backend: the catalogue write path is fed
+ * by playarr-arr-sync, so a server with no connection registered has an empty
+ * catalogue. A separate unsorted-folder scanner (playarr-api folder_scan.rs)
+ * lists files in administrator-enabled root folders that no connected tool
+ * manages, every 15 minutes by default; it keeps its own list of folder entries.
+ * Never describe these integrations as optional extras that merely improve
+ * matching.
  */
 export interface Integration {
   name: string

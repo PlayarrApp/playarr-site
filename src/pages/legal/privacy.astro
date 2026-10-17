@@ -49,12 +49,33 @@ import { LINKS, SITE } from '../../consts'
         the URLs those applications provide, caching it locally.
       </p>
       <p>
-        If you configure one, the server also forwards the requests your users make to a request
-        manager (an Ombi or Seerr style application) that you run and configure. What it sends
-        there is the requested title, its metadata identifiers and any seasons, and the request
-        manager account the requesting user is mapped to. Playarr itself searches, indexes and downloads
-        nothing. What the request manager does with a request is decided and controlled by the
-        person who operates it, not by the Playarr project.
+        When a user with request rights asks for a title that is not in the library, the server
+        passes the request to a request manager (an Ombi or Seerr style application) that you
+        have configured or, if none is configured, directly to your own library manager (Radarr
+        or Sonarr). Playarr itself obtains no media; what those applications then do is set up
+        and controlled by the operator, not by the Playarr project. What is sent:
+      </p>
+      <ul>
+        <li>
+          to a request manager: the requested title, its metadata identifiers (TMDB, TVDB), any
+          seasons, and the request manager account the requesting user is mapped to;
+        </li>
+        <li>
+          to Radarr or Sonarr directly: the title record that application's own lookup returned
+          for it (title, year, identifiers, artwork links and overview), the root folder and
+          quality profile the server chose, and instructions to monitor it and search for it
+          immediately.
+        </li>
+      </ul>
+      <p>
+        The search terms users type into search are sent to your Radarr or Sonarr lookup so that
+        titles outside the library can be shown.
+      </p>
+      <p>
+        Two other requests leave your server. On first use it downloads the all-MiniLM-L6-v2
+        embedding model (used for similar-title suggestions) from Hugging Face and caches it
+        locally, and it fetches artwork from the addresses your library managers provide, which
+        are usually on image.tmdb.org.
       </p>
       <p>
         Sign-in details go directly to your selected Playarr Server. The server may hold account
@@ -74,7 +95,7 @@ import { LINKS, SITE } from '../../consts'
         This covers the Playarr apps for iPhone, iPad, Apple TV, Android, Android TV and the web.
         The developer collects no data from them. The apps contain no advertising, no tracking, and
         no analytics or crash-reporting libraries, and they do not follow you across other
-        companies' apps or websites. They do include two Google components that talk to Google
+        companies' apps or websites. They do include Google components that talk to Google
         services, described under "Notifications and Google services" below, and which you can
         avoid.
       </p>
@@ -118,8 +139,8 @@ import { LINKS, SITE } from '../../consts'
         package name and timing, and it carries the notification itself. The token is also
         registered with your selected Playarr Server so it can deliver invitation notifications.
         Playarr does not use Firebase Analytics, advertising SDKs or cross-app tracking. To stop
-        this, turn invite notifications off in Android's notification settings, which stops them
-        being shown, or use a device or build without Google Play services,
+        this, turn off the "Invite approvals" notification channel in Android's notification settings
+        (the app has no separate in-app switch), which stops them being shown, or use a device or build without Google Play services,
         where no push token is created. Removing the push registration is a matter for your
         server administrator. Google's handling of Firebase data is governed by its own terms and
         privacy policy.
@@ -130,15 +151,28 @@ import { LINKS, SITE } from '../../consts'
         your local network and, when you choose to cast, exchanges the session and playback
         control messages with the Cast device through Google's Cast framework. Details of the item you
         are casting are sent to the Cast device so that it can play it from your server. To avoid
-        any of this, do not cast. Google's handling of Cast data is governed by its own terms and
+        this, do not cast. Google's handling of Cast data is governed by its own terms and
         privacy policy.
+      </p>
+      <p>
+        <strong>Play In-App Updates (Android).</strong> The Android app includes Google's Play
+        In-App Updates library, which contacts Google Play to ask whether a newer version is
+        available and to run the update. Google receives the ordinary information such a request
+        involves, such as the app package name and installed version. It applies to installs
+        from Google Play; Google's handling of that data is governed by its own terms and privacy
+        policy.
       </p>
 
       <h2>The hosted web app</h2>
       <p>
         playarr.app does not use advertising cookies, analytics pixels or behavioural profiling. If
         your server is configured for browser notifications and you allow them, the web app uses
-        Firebase Cloud Messaging in the same way as described above.
+        Firebase Cloud Messaging in the same way as described above. When the Player page opens
+        in a browser that can cast, the web app loads Google's Cast sender script from
+        www.gstatic.com, even if you never cast, so Google's servers see that request (your IP
+        address and user agent). Avoid it by using a browser
+        without Cast support, or by blocking that address. Casting itself then works as described
+        for Android above.
         The signed-in web app can store server addresses, device identifiers, names, access and
         refresh tokens, interface preferences, download records and media, and playback progress
         waiting to sync in your browser. Hosting and network providers may process ordinary

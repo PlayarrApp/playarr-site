@@ -21,7 +21,7 @@ const groups = [
       },
       {
         q: 'Does it supply any media?',
-        a: 'No. Playarr Server ships no content and no sources. It plays media you already have on storage you already control. It can forward requests your users make to a request manager that you run and configure; Playarr itself searches, indexes and downloads nothing, and anything that happens beyond that point is the responsibility of the operator of that application.',
+        a: 'No. Playarr Server ships no content and no sources. It plays media you already have on storage you already control. When a user with request rights asks for a title, the server passes the request to a request manager you have configured or, if there is none, to your own Radarr or Sonarr. Whether and how those applications search for or acquire anything is set up and controlled by you, the operator, and is your responsibility. Playarr itself obtains no media.',
       },
       {
         q: 'What does it cost?',

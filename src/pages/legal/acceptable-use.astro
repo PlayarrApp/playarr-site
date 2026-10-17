@@ -31,14 +31,22 @@ import { LINKS, SITE } from '../../consts'
       <h2>What it is not</h2>
       <p>
         {SITE.name} supplies no media and ships nothing preconfigured that points at any external
-        source. The server itself searches, indexes and downloads nothing.
+        source. The server itself performs no indexing and obtains no media itself.
       </p>
       <p>
-        Playarr Server can forward the requests your users make to a request manager (an Ombi or
-        Seerr style application) that you run and configure yourself. It does not choose that
-        application, does not supply an address for one, and does not contact one unless you set
-        it up. Whatever that request manager, or anything connected to it, goes on to do happens
-        there, under the responsibility of the person who operates it.
+        When a user with request rights asks for a title that is not in the library, Playarr
+        Server passes the request on. It goes either to a request manager (an Ombi or Seerr style
+        application) that the operator has configured or, if none is configured, directly to the
+        operator's own library manager (Radarr or Sonarr), asking it to add the title and look
+        for it. Whether and how those applications search for or acquire anything is set up and
+        controlled by the operator, under the operator's responsibility. Playarr itself obtains
+        no media.
+      </p>
+      <p>
+        Operators who do not want this can withhold the request permission. It is off by default
+        for new accounts, administrators can always request, and the
+        <code>PLAYARR_REQUESTS_ALLOW_ALL_USERS</code> setting, which grants it to every account,
+        is off unless an operator sets it.
       </p>
       <p>
         Where it reads from library-management applications, it reads only what those applications

@@ -10,10 +10,14 @@ it, it reads the organised result. Each app you register becomes a **source inst
 base URL and that app's own API key. Playarr then re-reads it on a schedule and turns what it
 finds into the catalogue your Playarr clients browse.
 
-> **What Playarr does not do.** Playarr supplies no media and itself searches, indexes and downloads
-> nothing. Every request it makes to a connected library manager is an HTTP `GET`, there is no `POST`, `PUT` or `DELETE` helper
-> anywhere in `playarr-arr-client`. It reads the library those apps have already organised; it
-> never changes it, and it never reaches past it.
+> **What Playarr does not do.** Playarr supplies no media and itself obtains none. Reading the
+> library is done with HTTP `GET` requests only. The one write is the request flow: when a user with
+> request rights asks for a title that is not in the library and no request manager is configured,
+> Playarr sends one `POST` (`add_movie` to Radarr, `add_series` to Sonarr) asking that application to
+> add and monitor the title and search for it. Whether and how Radarr or Sonarr then searches for or
+> acquires anything is set up and controlled by you, and is your responsibility. If you do not want
+> this, leave the request permission off for accounts (it is off by default, administrators can always
+> request, and `PLAYARR_REQUESTS_ALLOW_ALL_USERS` grants it to everyone only if you set it).
 
 ## Before you start
 
@@ -51,8 +55,9 @@ Every library manager exposes its key at **Settings → General → API Key** in
 
 Three things are worth understanding before you add the first one.
 
-**It is read-only.** Playarr authenticates with the app's standard `X-Api-Key` header and issues
-only `GET` requests. The shared HTTP helpers are `get_json` and `get_status`; nothing else exists.
+**It reads, and writes only for requests.** Playarr authenticates with the app's standard `X-Api-Key`
+header and reads with `GET` requests (the shared helpers are `get_json` and `get_status`). The only
+other helper is `post_json`, used by `add_movie` and `add_series` for the request flow described above.
 
 **Polling is the truth.** A `ReconciliationPoller` runs a full listing pass per instance and diffs
 it against Playarr's own catalogue. The interval is **300 seconds (five minutes)**, and the first

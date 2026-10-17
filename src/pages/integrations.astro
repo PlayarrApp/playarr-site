@@ -9,7 +9,7 @@ import { INTEGRATIONS, TDARR } from '../data/integrations'
  * The most carefully worded page on the site.
  *
  * Playarr Server reads a library the operator has already organised, using tools the
- * operator already runs. It performs no indexing and downloads nothing. Every
+ * operator already runs. It performs no indexing and obtains no media itself. Every
  * sentence here must stay on that side of the line.
  */
 ---
@@ -31,9 +31,9 @@ import { INTEGRATIONS, TDARR } from '../data/integrations'
         lists.
       </p>
       <p>
-        <strong>What Playarr Server does not do:</strong> it performs no indexing, searches, indexes and downloads
-        nothing itself. It can forward requests your users make to a request manager that you run
-        and configure; whatever happens there is the responsibility of its operator. It is a
+        <strong>What Playarr Server does not do:</strong> it performs no indexing and obtains no media itself. When a user with request rights asks for a title, it passes
+        the request to a request manager or, if none is configured, to your own Radarr or Sonarr.
+        What those applications then do is set up and controlled by you, and is your responsibility. It is a
         playback, catalogue and metadata layer over storage you already control.
       </p>
     </div>
