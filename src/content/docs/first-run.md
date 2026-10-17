@@ -210,9 +210,11 @@ explicitly.
 
 ## Add your libraries
 
-**Playarr does not scan folders.** It has no filesystem scanner and no metadata pipeline of its
-own. Its catalogue is built by reconciling against the library-management apps you already run, over
-those apps' own read-only REST endpoints. A deployment with nothing connected has an empty catalogue.
+**The catalogue comes from your library managers.** Its titles, metadata and file paths are built
+by reconciling against the library-management apps you already run, over their REST endpoints. A
+deployment with nothing connected has an empty catalogue. A separate unsorted-folder scanner can
+list media files in an enabled root folder that no library manager manages; it is off for each root
+folder until an administrator enables it, and rescans every 15 minutes.
 
 So "adding a library" means registering a **source instance**. Each registered instance is one
 library for permission purposes, the UUIDs in a policy's `library_allow` are source-instance ids.

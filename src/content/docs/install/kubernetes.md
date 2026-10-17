@@ -83,7 +83,7 @@ config:
   PLAYARR_LOG: "info"
 ```
 
-The chart already mounts the database volume at `/data`, which holds `playarr.db` and the artwork cache (`/data/cache/artwork`). It mounts no media: add your library volumes yourself, read-only, at the path your *arr apps report. The root filesystem is read-only, so every writable path must be a volume mount or the `/tmp` emptyDir. `DATABASE_URL` must be a `sqlite:` URL: a `postgres://` URL makes the pod exit at startup with an error.
+The chart already mounts the database volume at `/data`, which holds `playarr.db` and the artwork cache (`/data/cache/artwork`). It mounts no media: add your library volumes yourself, read-only, at the path your library managers report. The root filesystem is read-only, so every writable path must be a volume mount or the `/tmp` emptyDir. `DATABASE_URL` must be a `sqlite:` URL: a `postgres://` URL makes the pod exit at startup with an error.
 
 ## Step 4, Install
 

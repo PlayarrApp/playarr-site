@@ -23,10 +23,10 @@ running install.
 
 | State | Matters? | Why |
 | --- | --- | --- |
-| **The database** (the SQLite file) | **Critical** | Everything durable: catalogue, users and policies, *arr source-instance registrations and their API keys, Tdarr connection, library views, playlists, playback progress, invites, and this installation's Ed25519 node identity. |
+| **The database** (the SQLite file) | **Critical** | Everything durable: catalogue, users and policies, library-manager source-instance registrations and their API keys, Tdarr connection, library views, playlists, playback progress, invites, and this installation's Ed25519 node identity. |
 | **Configuration**, `/etc/playarr/playarr.env`, your Compose `.env`, or your Helm values file and Kubernetes Secret | **Critical** | Not stored in the database. If you set `PLAYARR_JWT_SECRET` explicitly, losing it signs every client out. If you do not, the server derives a stable secret from its node identity, which is in the database. |
 | **ACME state**, `PLAYARR_ACME_CACHE_DIR`, default `/var/lib/playarr/acme` | Useful | Holds the Let's Encrypt account and issued certificate. Recoverable by re-issuing, at the cost of rate-limit budget. Only exists if you enabled automatic HTTPS. |
-| **Artwork cache**, `PLAYARR_ARTWORK_CACHE_DIR` | Optional | A local copy of artwork already published by your *arr apps. Regenerated on demand; back it up only to avoid a re-fetch storm after a restore. |
+| **Artwork cache**, `PLAYARR_ARTWORK_CACHE_DIR` | Optional | A local copy of artwork already published by your library managers. Regenerated on demand; back it up only to avoid a re-fetch storm after a restore. |
 | **Episode-thumbnail and subtitle caches** | Optional | Derived from your own files with `ffmpeg`/`ffprobe`. Fully regenerable. |
 | **Transcode working directory**, `${TMPDIR}/playarr-transcode` | **No** | Live session scratch only. Never back it up. |
 | **Your media files** | Out of scope | Playarr never writes to them. Back them up however you already do. |
@@ -424,7 +424,7 @@ Finally, confirm the parts of the install that depend on database state survived
 1. **Sign in to Playarr Admin** at `/` on the same origin and port as the API. If it 404s, the
    built assets moved, check `PLAYARR_WEB_ASSETS_DIR` and the startup log line about serving the
    API only.
-2. **Check your *arr source instances are still registered** under Source Instances. They are
+2. **Check your library manager source instances are still registered** under Source Instances. They are
    hydrated from the database at every boot; every write is health-checked, so a stale API key shows
    up immediately. Trigger a reconciliation with
    `POST /api/v1/admin/source-instances/{id}/sync` (or the "Sync now" control) rather than waiting

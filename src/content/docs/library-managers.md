@@ -5,15 +5,19 @@ group: Setup
 order: 11
 ---
 
-You already run the *arr suite to keep your library tidy on disk. Playarr does not replace any of
+You already run library managers such as Sonarr and Radarr to keep your library tidy on disk. Playarr does not replace any of
 it, it reads the organised result. Each app you register becomes a **source instance**: a name, a
 base URL and that app's own API key. Playarr then re-reads it on a schedule and turns what it
 finds into the catalogue your Playarr clients browse.
 
-> **What Playarr does not do.** Playarr supplies no media and obtains none. Every request it
-> makes to a connected *arr app is an HTTP `GET`, there is no `POST`, `PUT` or `DELETE` helper
-> anywhere in `playarr-arr-client`. It reads the library those apps have already organised; it
-> never changes it, and it never reaches past it.
+> **What Playarr does not do.** Playarr supplies no media and itself obtains none. Reading the
+> library is done with HTTP `GET` requests only. The one write is the request flow: when a user with
+> request rights asks for a title that is not in the library, it goes where the administrator's
+> "Where requests go" setting in Playarr Admin sends it. The default is Direct, where Playarr sends one `POST` (`add_movie` to Radarr, `add_series` to Sonarr) asking that application to
+> add and monitor the title and search for it (Ombi or Seerr receive requests only if chosen there; "Direct + mirror" does both). Whether and how Radarr or Sonarr then searches for or
+> acquires anything is set up and controlled by you, and is your responsibility. If you do not want
+> this, leave the request permission off for accounts (it is off by default, administrators can always
+> request, and `PLAYARR_REQUESTS_ALLOW_ALL_USERS` grants it to everyone only if you set it).
 
 ## Before you start
 
@@ -28,10 +32,10 @@ finds into the catalogue your Playarr clients browse.
   `PLAYARR_BOOTSTRAP_ADMIN_USERNAME`, default `admin`, and, when
   `PLAYARR_BOOTSTRAP_ADMIN_PASSWORD` is unset, generates a random password and logs it exactly
   once at `WARN` level.
-- Each *arr app you want to connect, reachable from the Playarr server over HTTP, plus its API
+- Each library manager you want to connect, reachable from the Playarr server over HTTP, plus its API
   key.
 
-Every *arr app exposes its key at **Settings → General → API Key** in its own UI.
+Every library manager exposes its key at **Settings → General → API Key** in its own UI.
 
 | App | Playarr `kind` | API version Playarr talks | Typical port |
 | --- | --- | --- | --- |
@@ -51,8 +55,9 @@ Every *arr app exposes its key at **Settings → General → API Key** in its ow
 
 Three things are worth understanding before you add the first one.
 
-**It is read-only.** Playarr authenticates with the app's standard `X-Api-Key` header and issues
-only `GET` requests. The shared HTTP helpers are `get_json` and `get_status`; nothing else exists.
+**It reads, and writes only for requests.** Playarr authenticates with the app's standard `X-Api-Key`
+header and reads with `GET` requests (the shared helpers are `get_json` and `get_status`). The only
+other helper is `post_json`, used by `add_movie` and `add_series` for the request flow described above.
 
 **Polling is the truth.** A `ReconciliationPoller` runs a full listing pass per instance and diffs
 it against Playarr's own catalogue. The interval is **300 seconds (five minutes)**, and the first
@@ -160,7 +165,7 @@ All require an admin bearer token: `401` without one, `403` for a non-admin.
 
 > **Credentials are not encrypted at rest.** The database column is named `api_key_encrypted`, but
 > it is stored as plain text; the `Sensitive<String>` wrapper only stops the value leaking through
-> log formatting. Treat the Playarr database as holding live *arr credentials, and protect it
+> log formatting. Treat the Playarr database as holding live library manager credentials, and protect it
 > accordingly.
 
 ## What each app contributes
@@ -209,7 +214,7 @@ bitrate, channels, bit depth, sample rate).
 > **Artwork wrinkle.** Lidarr often reports only local, key-gated `/MediaCover/...` paths. Where an
 > artist has no usable poster, Playarr falls back to the first album cover, and mints an opaque
 > internal locator (`playarr-arr://<source-instance-id>/MediaCover/...`) that the backend resolves
-> using the instance's own key. Your *arr host and API key never reach a Playarr client.
+> using the instance's own key. Your library manager host and API key never reach a Playarr client.
 
 ### Readarr
 
@@ -298,7 +303,7 @@ Playarr exposes a receiver per instance:
 POST http://<YOUR-SERVER-URL>/webhooks/<SOURCE-INSTANCE-ID>
 ```
 
-You would add that as a generic webhook connection in the *arr app's own **Settings → Connect**.
+You would add that as a generic webhook connection in the library manager's own **Settings → Connect**.
 Playarr extracts only `eventType` and, where it can, one entity id, `/series/id` for Sonarr,
 `/movie/id` for Radarr, `/artist/id` for Lidarr, `/author/id` for Readarr. Bazarr and Prowlarr
 signals carry no usable entity id. The extracted signal is turned into a re-fetch request and
@@ -358,7 +363,7 @@ curl -sS -X POST "http://<YOUR-SERVER-URL>/api/v1/admin/source-instances/<ID>/sy
 - **Bazarr's catalogue integration is not built yet**, and Prowlarr has none by design.
 - **Readarr is best-effort** with unverified request shapes.
 - Playarr has no metadata-provider client of any kind. There is no TMDB, TVDB, MusicBrainz or
-  Goodreads HTTP client in the backend, Playarr holds only the identifiers your *arr apps pass
+  Goodreads HTTP client in the backend, Playarr holds only the identifiers your library managers pass
   through, and downloads and caches the artwork at whatever image URLs they supply. Everything you
   see in Playarr traces back to the apps you already run.
 

@@ -49,6 +49,38 @@ import { LINKS, SITE } from '../../consts'
         the URLs those applications provide, caching it locally.
       </p>
       <p>
+        When a user with request rights asks for a title that is not in the library, the server
+        sends it where the administrator's "Where requests go" setting in Playarr Admin says. The
+        default is Direct, to your own library manager (Radarr or Sonarr). An Ombi or Seerr style
+        request manager receives requests only when an administrator chooses it there (a chosen
+        one that is not enabled makes the request fail, with no fallback), and "Direct + mirror"
+        does both. Playarr itself obtains no media; what those applications then do is set up and
+        controlled by the operator, not by the Playarr project. What is sent:
+      </p>
+      <ul>
+        <li>
+          to a request manager: the requested title, its metadata identifiers (TMDB, TVDB), any
+          seasons, and the request manager account the requesting user is mapped to;
+        </li>
+        <li>
+          to Radarr or Sonarr directly: the title record that application's own lookup returned
+          for it (title, year, identifiers, artwork links and overview), the default root folder and
+          quality profile an administrator set on that instance (a direct request is refused if
+          either is unset), and instructions to monitor it and search for it
+          immediately.
+        </li>
+      </ul>
+      <p>
+        The search terms users type into search are sent to your Radarr or Sonarr lookup so that
+        titles outside the library can be shown.
+      </p>
+      <p>
+        Two other requests leave your server. On first use it downloads the all-MiniLM-L6-v2
+        embedding model (used for similar-title suggestions) from Hugging Face and caches it
+        locally, and it fetches artwork from the addresses your library managers provide, which
+        are usually on image.tmdb.org.
+      </p>
+      <p>
         Sign-in details go directly to your selected Playarr Server. The server may hold account
         and profile details, library metadata, artwork, watch history, playlists, download and
         playback state, server addresses, device identifiers, sessions, invitations and push
@@ -65,8 +97,10 @@ import { LINKS, SITE } from '../../consts'
       <p>
         This covers the Playarr apps for iPhone, iPad, Apple TV, Android, Android TV and the web.
         The developer collects no data from them. The apps contain no advertising, no tracking, and
-        no third-party analytics or crash-reporting libraries, and they do not follow you across
-        other companies' apps or websites.
+        no analytics or crash-reporting libraries, and they do not follow you across other
+        companies' apps or websites. They do include Google components that talk to Google
+        services, described under "Notifications and Google services" below, and which you can
+        avoid.
       </p>
       <p>What the apps keep on your own device:</p>
       <ul>
@@ -101,17 +135,47 @@ import { LINKS, SITE } from '../../consts'
 
       <h2>Notifications and Google services</h2>
       <p>
-        In production Android builds configured for invite notifications, Google Firebase Cloud
-        Messaging creates an app-installation identifier and push token after you sign in. The
-        token is registered with your selected Playarr Server so it can deliver invitation
-        notifications; notification permission controls whether Android displays them. Playarr
-        does not use Firebase Analytics, advertising SDKs or cross-app tracking. Google's handling
-        of Firebase data is governed by its own terms and privacy policy.
+        <strong>Firebase Cloud Messaging (Android and Android TV).</strong> In production builds
+        configured for invite notifications, Google Firebase Cloud Messaging creates an
+        app-installation identifier and a push token after you sign in. Google receives that
+        token and the metadata needed to deliver a message to your device, such as the app
+        package name and timing, and it carries the notification itself. The token is also
+        registered with your selected Playarr Server so it can deliver invitation notifications.
+        Playarr does not use Firebase Analytics, advertising SDKs or cross-app tracking. To stop
+        this, turn off the "Invite approvals" notification channel in Android's notification settings
+        (the app has no separate in-app switch), which stops them being shown, or use a device or build without Google Play services,
+        where no push token is created. Removing the push registration is a matter for your
+        server administrator. Google's handling of Firebase data is governed by its own terms and
+        privacy policy.
+      </p>
+      <p>
+        <strong>Google Cast sender (Android).</strong> The Android app includes Google's Cast
+        sender framework, supplied through Google Play services. It looks for Cast devices on
+        your local network and, when you choose to cast, exchanges the session and playback
+        control messages with the Cast device through Google's Cast framework. Details of the item you
+        are casting are sent to the Cast device so that it can play it from your server. To avoid
+        this, do not cast. Google's handling of Cast data is governed by its own terms and
+        privacy policy.
+      </p>
+      <p>
+        <strong>Play In-App Updates (Android).</strong> The Android app includes Google's Play
+        In-App Updates library, which contacts Google Play to ask whether a newer version is
+        available and to run the update. Google receives the ordinary information such a request
+        involves, such as the app package name and installed version. It applies to installs
+        from Google Play; Google's handling of that data is governed by its own terms and privacy
+        policy.
       </p>
 
       <h2>The hosted web app</h2>
       <p>
-        playarr.app does not use advertising cookies, analytics pixels or behavioural profiling.
+        playarr.app does not use advertising cookies, analytics pixels or behavioural profiling. If
+        your server is configured for browser notifications and you allow them, the web app uses
+        Firebase Cloud Messaging in the same way as described above. When the Player page opens
+        in a browser that can cast, the web app loads Google's Cast sender script from
+        www.gstatic.com, even if you never cast, so Google's servers see that request (your IP
+        address and user agent). Avoid it by using a browser
+        without Cast support, or by blocking that address. Casting itself then works as described
+        for Android above.
         The signed-in web app can store server addresses, device identifiers, names, access and
         refresh tokens, interface preferences, download records and media, and playback progress
         waiting to sync in your browser. Hosting and network providers may process ordinary
@@ -182,6 +246,12 @@ import { LINKS, SITE } from '../../consts'
         Thomas McFarlane. You can also use the contact method on the
         <a href={LINKS.repo} rel="noopener">Playarr repository</a>. Do not put passwords, tokens
         or private information in a public issue.
+      </p>
+      <p>
+        Rights holders and others reporting abuse can use the same address. Please include the
+        work concerned, where it appears, your contact details, and a statement that you believe in
+        good faith that the use is not authorised. Playarr hosts no content, so complaints about
+        media on a self-hosted server go to the operator of that server.
       </p>
     </div>
   </Section>

@@ -307,7 +307,7 @@ deployment the dispatcher only sees the sessions on its own node.
 
 > **Not built yet: library-manager import events on the dispatch channel.** Today the only producer
 > feeding the dispatcher is the on-demand playback bridge described above. Wiring import and upgrade
-> events from the *arr reconciliation flow onto the same channel is a known, unaddressed gap.
+> events from the library-manager reconciliation flow onto the same channel is a known, unaddressed gap.
 
 ## Converted downloads
 

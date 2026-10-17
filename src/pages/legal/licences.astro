@@ -75,15 +75,23 @@ import { LINKS, SITE } from '../../consts'
       </p>
 
       <h2 id="tmdb">TMDB</h2>
+      <p>
+        <img src="/_site/tmdb-logo.svg" alt="TMDB" width="212" height="18" loading="lazy" />
+      </p>
       <blockquote>
         <p>
           This website uses TMDB and the TMDB APIs but is not endorsed, certified, or otherwise
           approved by TMDB.
         </p>
       </blockquote>
+      <blockquote>
+        <p>This product uses the TMDB API but is not endorsed or certified by TMDB.</p>
+      </blockquote>
       <p>
-        Metadata identifiers and artwork reaching a Playarr Server installation may originate with TMDB,
-        by way of the library-management tools it reads from. TMDB is not a partner, sponsor or
+        The first notice applies to this website. The second applies to Playarr Server and the
+        Playarr apps. Metadata identifiers and artwork reaching a Playarr Server installation may
+        originate with TMDB, by way of the library-management tools it reads from or the metadata
+        sources the operator configures. TMDB is not a partner, sponsor or
         endorser of this project.
       </p>
 
@@ -98,11 +106,77 @@ import { LINKS, SITE } from '../../consts'
 
       <h2 id="third-party">Other third-party software</h2>
       <p>
-        Playarr Server and Playarr are built on a large amount of open-source software across their Rust
-        and TypeScript trees. A generated dependency and licence inventory belongs here and is not
-        yet published; the dependency manifests in the
-        <a href={LINKS.repo} rel="noopener">repository</a> are authoritative in the meantime.
+        Playarr Server and the Playarr apps include the open-source and vendor components below.
+        Each remains under its own licence, and each project's own licence text applies. Exact
+        versions are pinned in the dependency manifests and lock files in the
+        <a href={LINKS.repo} rel="noopener">repository</a>, which are authoritative.
       </p>
+
+      <h3>Playarr Server (Rust)</h3>
+      <p>
+        The server is built from Rust crates. The project's licence policy accepts only these
+        licence families: MIT, Apache-2.0 (including with the LLVM exception), BSD-2-Clause,
+        BSD-3-Clause, ISC, Unicode-3.0, Zlib, CC0-1.0, MPL-2.0, NCSA, CDLA-Permissive-2.0 and
+        BSL-1.0. Most are permissive. MPL-2.0 (used by option-ext, for example) is file-level
+        copyleft: changes to the MPL-licensed files themselves must be shared under the MPL.
+        The direct dependencies include:
+      </p>
+      <ul>
+        <li>Runtime and web: tokio, tokio-util, futures, async-trait, axum, axum-server, tower, tower-http, reqwest, rustls, rustls-acme, rustls-pki-types, instant-acme, x509-parser</li>
+        <li>Data and API: sqlx, serde, serde_json, uuid, chrono, chrono-tz, toml, utoipa, utoipa-axum</li>
+        <li>Authentication and cryptography: jsonwebtoken, argon2, ed25519-dalek, chacha20poly1305, sha2, hmac, hex, base64, rand_core, ipnet</li>
+        <li>Backup and storage: age, tar, flate2, zip, fs4, tempfile</li>
+        <li>Caching and search: moka, dashmap, strsim, unicode-normalization, fastembed (and the ONNX Runtime it uses)</li>
+        <li>Images: image</li>
+        <li>Command line, errors and telemetry: clap, anyhow, thiserror, tracing, tracing-subscriber, tracing-appender, tracing-opentelemetry, opentelemetry, opentelemetry_sdk, opentelemetry-otlp, libc</li>
+      </ul>
+
+      <h3>Playarr for Android and Android TV</h3>
+      <ul>
+        <li>AndroidX (Core, Lifecycle, Activity, Navigation, DataStore, Room, WorkManager, Hilt integration, Core Splashscreen, TV Foundation and TV Material), Jetpack Compose and Material 3 (Apache-2.0)</li>
+        <li>AndroidX Media3 / ExoPlayer (Apache-2.0)</li>
+        <li>Dagger Hilt (Apache-2.0)</li>
+        <li>Retrofit, the kotlinx.serialization converter for Retrofit, and OkHttp (Apache-2.0)</li>
+        <li>kotlinx.serialization and kotlinx.coroutines (Apache-2.0)</li>
+        <li>Coil (Apache-2.0)</li>
+        <li>ZXing core (Apache-2.0)</li>
+        <li>Firebase Cloud Messaging (Apache-2.0)</li>
+        <li>The Google Cast framework and the Play In-App Updates library, supplied by Google under Google's own terms</li>
+      </ul>
+
+      <h3>Playarr for iPhone and iPad</h3>
+      <ul>
+        <li>Google Cast SDK for iOS, supplied by Google under Google's own terms</li>
+      </ul>
+
+      <h3>Fonts (Android, iOS and web apps)</h3>
+      <ul>
+        <li>Nunito Sans and JetBrains Mono, under the SIL Open Font Licence 1.1. Copyright 2016 The Nunito Sans Project Authors (https://github.com/Fonthausen/NunitoSans); copyright 2020 The JetBrains Mono Project Authors (https://github.com/JetBrains/JetBrainsMono). These notices apply to the Android, iOS and web apps.</li>
+      </ul>
+
+      <h3>Embedding model</h3>
+      <ul>
+        <li>The server downloads the all-MiniLM-L6-v2 sentence-embedding model from Hugging Face on first use (<a href="https://huggingface.co/Qdrant/all-MiniLM-L6-v2-onnx" rel="noopener">model card</a>, ONNX port of <a href="https://huggingface.co/sentence-transformers/all-MiniLM-L6-v2" rel="noopener">sentence-transformers/all-MiniLM-L6-v2</a>). Both model cards state the licence as Apache-2.0 (verified from the cards). The model is not bundled in the image.</li>
+      </ul>
+
+      <h3>Playarr web, admin and television web apps (TypeScript)</h3>
+      <ul>
+        <li>React and React DOM (MIT)</li>
+        <li>React Router (MIT)</li>
+        <li>Shaka Player (Apache-2.0)</li>
+        <li>openapi-fetch (MIT)</li>
+        <li>qrcode (MIT)</li>
+        <li>jpeg-js (BSD-3-Clause)</li>
+        <li>Firebase JavaScript SDK, used for browser notifications (Apache-2.0)</li>
+        <li>Google Cast sender SDK for the web, loaded from Google at run time under Google's own terms</li>
+        <li>Scalar API Reference, used in the admin app (MIT)</li>
+      </ul>
+
+      <h3>Container images</h3>
+      <ul>
+        <li>FFmpeg, installed in the server image from the Debian distribution (GPL-2.0-or-later, see above)</li>
+        <li>Debian base image packages, including ca-certificates, curl and tini, each under its own licence</li>
+      </ul>
 
       <p>
         The Xbox mark on the clients pages is the “xbox” brand icon from Font Awesome Free, used under

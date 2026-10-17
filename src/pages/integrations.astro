@@ -9,7 +9,7 @@ import { INTEGRATIONS, TDARR } from '../data/integrations'
  * The most carefully worded page on the site.
  *
  * Playarr Server reads a library the operator has already organised, using tools the
- * operator already runs. It performs no indexing and obtains no media. Every
+ * operator already runs. It performs no indexing and obtains no media itself. Every
  * sentence here must stay on that side of the line.
  */
 ---
@@ -21,7 +21,7 @@ import { INTEGRATIONS, TDARR } from '../data/integrations'
   <Section
     eyebrow="Integrations"
     title="Works with the tools you already run"
-    lede="If you keep your library tidy with the *arr applications, Playarr Server reads the result. It does not replace them, it does not duplicate them, and their own interfaces carry on working exactly as before."
+    lede="If you keep your library tidy with library managers such as Sonarr and Radarr, Playarr Server reads the result. It does not replace them, it does not duplicate them, and their own interfaces carry on working exactly as before."
   >
     <div class="statement">
       <p>
@@ -31,9 +31,12 @@ import { INTEGRATIONS, TDARR } from '../data/integrations'
         lists.
       </p>
       <p>
-        <strong>What Playarr Server does not do:</strong> it performs no indexing, runs no searches
-        against anything outside your own library, and obtains no media. It is a playback,
-        catalogue and metadata layer over storage you already control.
+        <strong>What Playarr Server does not do:</strong> it performs no indexing and obtains no media itself. When a user with request rights asks for a title, it sends
+        the request where the administrator's "Where requests go" setting says. The default is
+        Direct, which asks your own Radarr or Sonarr to add the title and look for it. Ombi or
+        Seerr receive requests only if chosen there.
+        What those applications then do is set up and controlled by you, and is your responsibility. It is a
+        playback, catalogue and metadata layer over storage you already control.
       </p>
     </div>
   </Section>
