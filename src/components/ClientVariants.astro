@@ -4,9 +4,11 @@ import { groupByFamily, loadManifest, ROUTE_LABEL, ROUTE_TONE } from '../data/va
 
 const manifest = await loadManifest()
 const groups = groupByFamily(manifest)
+// Lets the client script match release assets without a second source of truth.
+const seed = JSON.stringify({ version: manifest.version, variants: manifest.variants })
 ---
 
-<section class="variants" aria-labelledby="variants-title">
+<section class="variants" aria-labelledby="variants-title" data-manifest={seed}>
   <h2 id="variants-title">Every client variant</h2>
   <p class="meta">Release {manifest.version}. Each row is one install route with its own minimum system.</p>
   {
@@ -15,18 +17,16 @@ const groups = groupByFamily(manifest)
         <h3>{family}</h3>
         <ul>
           {items.map((v) => (
-            <li class="row">
+            <li class="row" data-id={v.id}>
               <div class="text">
                 <strong>{v.name}</strong>
-                <span class="sub">Requires {v.min_os} · v{manifest.version}</span>
+                <span class="sub">Minimum OS: {v.min_os} · v<span class="ver">{manifest.version}</span></span>
                 {v.note && <span class="sub">{v.note}</span>}
               </div>
               <Pill tone={ROUTE_TONE[v.shown]}>{ROUTE_LABEL[v.shown]}</Pill>
-              {v.href && (
-                <a class="link" href={v.href}>
-                  {ROUTE_LABEL[v.shown]}<span class="sr"> {v.name}</span>
-                </a>
-              )}
+              <a class="link" href={v.href ?? undefined} hidden={!v.href}>
+                <span class="lbl">{ROUTE_LABEL[v.shown]}</span><span class="sr"> {v.name}</span>
+              </a>
             </li>
           ))}
         </ul>
@@ -34,6 +34,62 @@ const groups = groupByFamily(manifest)
     ))
   }
 </section>
+
+<script>
+  import { isManifest, resolve, ROUTE_LABEL, ROUTE_TONE } from '../data/variants'
+  import type { Variant } from '../data/variants'
+
+  // Progressive enhancement: the static HTML is already correct; any failure is ignored.
+  const root = document.querySelector<HTMLElement>('.variants')
+  const API = 'https://api.github.com/repos/PlayarrApp/playarr/releases/latest'
+
+  type Shown = { href: string | null; shown: keyof typeof ROUTE_LABEL; version: string }
+
+  function apply(id: string, s: Shown) {
+    const row = root?.querySelector(`[data-id="${CSS.escape(id)}"]`)
+    if (!row) return
+    const pill = row.querySelector('.pill')!
+    pill.classList.remove('ok', 'warn')
+    if (ROUTE_TONE[s.shown] !== 'neutral') pill.classList.add(ROUTE_TONE[s.shown])
+    pill.textContent = ROUTE_LABEL[s.shown]
+    row.querySelector('.ver')!.textContent = s.version
+    const a = row.querySelector<HTMLAnchorElement>('.link')!
+    a.querySelector('.lbl')!.textContent = ROUTE_LABEL[s.shown]
+    if (s.href) a.href = s.href
+    a.hidden = !s.href
+  }
+
+  async function run() {
+    const base = JSON.parse(root!.dataset.manifest!) as { version: string; variants: Variant[] }
+    const rel = await (await fetch(API)).json()
+    const version = String(rel.tag_name).replace(/^v/, '')
+    if (version === base.version) return
+    const assets: { name: string; url: string; browser_download_url: string }[] = rel.assets
+    const man = assets.find((a) => a.name === 'clients.json')
+    if (man) {
+      try {
+        const res = await fetch(man.url, { headers: { Accept: 'application/octet-stream' } })
+        const json: unknown = await res.json()
+        if (isManifest(json)) {
+          for (const v of json.variants) {
+            const r = resolve(v, json.version)
+            apply(v.id, { href: r.href, shown: r.shown, version: json.version })
+          }
+          return
+        }
+      } catch {
+        // cross-origin asset download not allowed: use asset names instead
+      }
+    }
+    for (const v of base.variants) {
+      if (!v.asset) continue
+      const hit = assets.find((a) => a.name === v.asset!.replaceAll(base.version, version))
+      if (hit) apply(v.id, { href: hit.browser_download_url, shown: 'download', version })
+    }
+  }
+
+  if (root) run().catch(() => {})
+</script>
 
 <style>
   .variants { margin-top: var(--space-7); }
