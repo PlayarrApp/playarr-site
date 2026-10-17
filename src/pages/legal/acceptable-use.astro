@@ -30,9 +30,15 @@ import { LINKS, SITE } from '../../consts'
 
       <h2>What it is not</h2>
       <p>
-        {SITE.name} supplies no media, no sources of media, and no means of obtaining media. It
-        performs no indexing, ships nothing preconfigured that points at any external source, and
-        searches nothing outside your own library. It cannot get you a film you do not have.
+        {SITE.name} supplies no media and ships nothing preconfigured that points at any external
+        source. The server itself searches, indexes and downloads nothing.
+      </p>
+      <p>
+        Playarr Server can forward the requests your users make to a request manager (an Ombi or
+        Seerr style application) that you run and configure yourself. It does not choose that
+        application, does not supply an address for one, and does not contact one unless you set
+        it up. Whatever that request manager, or anything connected to it, goes on to do happens
+        there, under the responsibility of the person who operates it.
       </p>
       <p>
         Where it reads from library-management applications, it reads only what those applications
@@ -69,9 +75,19 @@ import { LINKS, SITE } from '../../consts'
 
       <h2>Reporting a concern</h2>
       <p>
-        If you believe material connected to this project infringes your rights, or you have a
-        security concern, please <a href={LINKS.issues} rel="noopener">open an issue</a> or use the
-        contact route listed in the repository, and we will respond.
+        Rights holders and anyone reporting abuse can write to
+        <a href="mailto:support@playarr.app">support@playarr.app</a>. For a security concern you
+        can also <a href={LINKS.issues} rel="noopener">open an issue</a>, without including
+        private details.
+      </p>
+      <p>
+        Please include the work concerned, where it appears, your contact details, and a statement
+        that you believe in good faith that the use is not authorised.
+      </p>
+      <p>
+        {SITE.name} hosts no content. Media on a self-hosted server is stored and shared by that
+        server's operator, so complaints about it should go to the operator of that server. We
+        will respond to what falls within the project's control.
       </p>
 
       <h2>No warranty</h2>
