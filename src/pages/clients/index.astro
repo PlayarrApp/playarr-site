@@ -2,12 +2,14 @@
 import BaseLayout from '../../layouts/BaseLayout.astro'
 import Section from '../../components/Section.astro'
 import ClientTiles from '../../components/ClientTiles.astro'
+import ClientVariants from '../../components/ClientVariants.astro'
 import { clientCopy } from '../../data/platforms'
 ---
 
 <BaseLayout title={clientCopy('documentTitle')} description={clientCopy('description')}>
   <Section eyebrow={clientCopy('kicker')} title={clientCopy('title')} lede={clientCopy('description')}>
     <ClientTiles />
+    <ClientVariants />
     <p class="foot">{clientCopy('footer')}</p>
   </Section>
 </BaseLayout>

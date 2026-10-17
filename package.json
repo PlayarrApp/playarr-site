@@ -16,6 +16,7 @@
     "check": "astro check && node scripts/check-copy.mjs",
     "typecheck": "astro check",
     "lint": "node scripts/check-copy.mjs",
+    "test": "node --experimental-strip-types scripts/check-clients.mjs",
     "lint:licences": "node scripts/check-licences.mjs",
     "lint:copy": "node scripts/check-copy.mjs",
     "lint:copy:strict": "node scripts/check-copy.mjs --strict"

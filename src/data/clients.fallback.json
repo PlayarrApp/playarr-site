@@ -1,0 +1,24 @@
+{
+  "version": "0.3.0",
+  "published_at": "2026-10-17T13:34:07Z",
+  "variants": [
+    { "id": "tizen-web", "family": "Samsung TV", "name": "Samsung Tizen web package", "min_os": "Tizen 7.0 (older TVs)", "route": "download", "asset": "playarr-tizen-0.3.0-unsigned.zip", "store_url": null, "note": "Unsigned web package. Sign it with your own certificate and install over sdb." },
+    { "id": "tizen-native", "family": "Samsung TV", "name": "Samsung Tizen native app", "min_os": "Tizen 10", "route": "download", "asset": null, "store_url": null, "note": "Native app for Tizen 10 and later." },
+    { "id": "webos", "family": "LG TV", "name": "LG webOS", "min_os": "webOS 23", "route": "download", "asset": "playarr-webos-0.3.0.ipk", "store_url": null, "note": "Install with LG Developer Mode." },
+    { "id": "vidaa", "family": "Hisense TV", "name": "Hisense VIDAA", "min_os": "Not specified", "route": "hosted", "asset": null, "store_url": "/clients/vidaa", "note": "Hosted launcher. Experimental." },
+    { "id": "roku", "family": "Roku", "name": "Roku", "min_os": "Not specified", "route": "download", "asset": "playarr-roku-0.3.0.zip", "store_url": null, "note": "Sideload with Developer Mode." },
+    { "id": "firetv-vega", "family": "Amazon Fire TV", "name": "Fire TV (Vega OS)", "min_os": "Vega OS 1.2", "route": "pending", "asset": null, "store_url": null, "note": "Not published yet." },
+    { "id": "firetv-apk", "family": "Amazon Fire TV", "name": "Fire OS and Android TV APK", "min_os": "Android 8.0 (API 26)", "route": "download", "asset": "playarr-android.apk", "store_url": null, "note": "Sideload the universal APK." },
+    { "id": "android-apk", "family": "Android", "name": "Android phone and tablet APK", "min_os": "Android 8.0 (API 26)", "route": "download", "asset": "playarr-android.apk", "store_url": null, "note": "Signed universal package." },
+    { "id": "android-play", "family": "Android", "name": "Google Play", "min_os": "Android 8.0 (API 26)", "route": "store", "asset": null, "store_url": null, "note": "Closed testing." },
+    { "id": "ios", "family": "Apple", "name": "iPhone", "min_os": "iOS 17", "route": "testflight", "asset": null, "store_url": null, "note": "TestFlight." },
+    { "id": "ipados", "family": "Apple", "name": "iPad", "min_os": "iPadOS 17", "route": "testflight", "asset": null, "store_url": null, "note": "TestFlight." },
+    { "id": "tvos", "family": "Apple", "name": "Apple TV", "min_os": "tvOS 17", "route": "testflight", "asset": null, "store_url": null, "note": "TestFlight." },
+    { "id": "macos", "family": "Apple", "name": "Mac", "min_os": "macOS 14", "route": "download", "asset": null, "store_url": null, "note": "Unsigned build." },
+    { "id": "xbox", "family": "Xbox", "name": "Xbox", "min_os": "Windows 10 1809", "route": "download", "asset": "playarr-xbox-0.3.0-x64-unsigned.msix", "store_url": null, "note": "Unsigned. Sideload through Developer Mode." },
+    { "id": "harmony", "family": "HarmonyOS", "name": "HarmonyOS", "min_os": "HarmonyOS 5.0", "route": "download", "asset": "playarr-harmony-0.3.0-unsigned.hap", "store_url": null, "note": "Unsigned HAP." },
+    { "id": "linux-phone", "family": "Linux", "name": "Linux phone", "min_os": "x86_64", "route": "download", "asset": null, "store_url": null, "note": "x86_64 tarball." },
+    { "id": "sailfish", "family": "Linux", "name": "Sailfish OS", "min_os": "Not specified", "route": "pending", "asset": null, "store_url": null, "note": "Not published yet." },
+    { "id": "web", "family": "Web", "name": "Web", "min_os": "Any modern browser", "route": "web", "asset": null, "store_url": "/login", "note": "Nothing to install." }
+  ]
+}
